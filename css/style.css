@@ -48,8 +48,8 @@ body{
     width: 80%;
     font-size: 24px;
     font-weight: 500;
-    /* text-transform: uppercase; */
     padding-left: 32px;
+    text-transform: capitalize;
 }
 
 .campo-pesquisa input::placeholder{
@@ -120,7 +120,7 @@ body{
     justify-content: flex-start;
 }
 .clima-detalhes .vento{
-    padding-left: 20px;
+    padding-right: 20px;
     justify-content: flex-end;
 }
 .clima-detalhes i{
