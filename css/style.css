@@ -22,6 +22,8 @@ body{
     align-items: center;
     justify-content: center;
     background:var(--primeira-cor);
+    margin-left: 4vh;
+    margin-right: 4vh;
 }
 
 .container{
