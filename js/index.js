@@ -5,7 +5,7 @@ const climaDetalhes = document.querySelector(".clima-detalhes");
 const error404 = document.querySelector(".nao-encontrado");
 
 campoBusca.addEventListener("click", () => {
-  const APIKey = "51c2f701a9d1b5bc7c8b4611dd662911";
+  const APIKey = config.APIKey;
   const cidade = document.querySelector(".campo-pesquisa input").value;
 
   if (cidade === "") {
