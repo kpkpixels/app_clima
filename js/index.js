@@ -13,6 +13,9 @@ campoBuscaInput.addEventListener("keydown", function(e) {
         chamadaApi();
     }
 });
+campoBuscaInput.addEventListener("keydown", () => {
+    matchMunicipio();
+});
 
 function chamadaApi(){
     const APIKey = config.APIKey;
@@ -41,6 +44,8 @@ function chamadaApi(){
   
       const image = document.querySelector(".clima-box img");
       const temperatura = document.querySelector(".clima-box .temperatura");
+      const temperaturaMax = document.querySelector(".clima-box .temperaturaMax");
+      const temperaturaMin = document.querySelector(".clima-box .temperaturaMin");
       const descricao = document.querySelector(".clima-box .descricao");
       const umidade = document.querySelector(".clima-detalhes .umidade span");
       const vento = document.querySelector(".clima-detalhes .vento span");
@@ -79,10 +84,13 @@ function chamadaApi(){
       }
   
       temperatura.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
+      temperaturaMax.innerHTML = `${parseInt(json.main.temp_max)}°C  <i class="fas fa-arrow-up"></i>`;
+      temperaturaMin.innerHTML = `${parseInt(json.main.temp_min)}°C  <i class="fas fa-arrow-down"></i>`;
       descricao.innerHTML = `${json.weather[0].description}`;
       umidade.innerHTML = `${json.main.humidity}%`;
       vento.innerHTML = `${parseFloat(json.wind.speed)} Km/h`;
   
+      campoBuscaInput.value = campoBuscaInput.value + " - " + json.sys.country;
   
       climaBox.style.display = "";
       climaDetalhes.style.display = "";
@@ -90,6 +98,31 @@ function chamadaApi(){
       climaDetalhes.classList.add("fadeIn");
       container.style.height = "590px";
   
+      //getMunicipios();
   
+    });
+}
+
+function matchMunicipio(){
+    // const filtrado = cidades.nomeCidades.filter(str => str.includes(campoBuscaInput.value));
+    // console.log(filtrado);
+    const primeirosResultados = [];
+    let cont = 0;
+
+    for (let i = 0; i < cidades.nomeCidades.length && cont < 5; i++) {
+        if (cidades.nomeCidades[i].toLowerCase().includes(campoBuscaInput.value)) {
+            primeirosResultados.push(cidades.nomeCidades[i]);
+            cont++;
+        }
+    }
+    console.log(primeirosResultados);
+}
+
+function getMunicipios(){
+    fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/municipios?orderBy=nome`).then(result => result.json()).then
+    (json => {
+        for (let i = 0; i < json.length; i++) {
+            console.log('"'+json[i].nome+'",');
+        }
     });
 }

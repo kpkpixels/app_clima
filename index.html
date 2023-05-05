@@ -18,6 +18,13 @@
             <input type="text" placeholder="Digite sua cidade">
             <button class="fa-solid fa-magnifying-glass"></button>
         </div>
+        <div class="autocomplete-cidades">
+            <span>Feliz</span>
+            <span>Alto Feliz</span>
+            <span>Asdasd Feliz</span>
+            <span>Sad Feliz</span>
+            <span> Happy Feliz</span>
+        </div>
 
         <div class="nao-encontrado">
             <img src="imagens/404.png">
@@ -26,8 +33,17 @@
 
         <div class="clima-box">
             <img src="" alt="">
-            <p class="temperatura"></p>
+            <div class="temperaturas">
+                <div>
+                    <p class="temperatura"></p>
+                </div>
+                <div style="padding-left: 40px; font-weight: 600;">
+                    <p class="temperaturaMax" style="color: #c72d2d"></p>
+                    <p class="temperaturaMin" style="color: #5757d7"></p> 
+                </div>
+            </div>
             <p class="descricao"></p>
+
         </div>
 
         <div class="clima-detalhes">
@@ -51,5 +67,6 @@
     <script src="https://kit.fontawesome.com/7c8801c017.js" crossorigin="anonymous"></script>
     <script src="js/index.js"></script>
     <script src='js/config.js'></script>
+    <script src='js/cidades.js'></script>
 </body>
 </html>

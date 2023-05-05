@@ -29,7 +29,8 @@ body{
 .container{
     position: relative;
     width: 400px;
-    height: 105px;
+    /* height: 105px; */
+    height: 350px; /* só quando chama o autocomplete */
     background: #FFF;
     padding: 28px 32px;
     overflow: hidden;
@@ -86,6 +87,11 @@ body{
     width: 60%;
     margin-top: 30px;
 }
+.temperaturas{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .clima-box .temperatura{
     position: relative;
     color: var(--segunda-cor);
@@ -135,6 +141,25 @@ body{
     color: var(--primeira-cor);
     font-size: 22px;
     font-weight: 500;
+}
+.autocomplete-cidades{
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+}
+.autocomplete-cidades span{
+    font-size: 20px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+    outline: auto;
+    padding: 11px;
+    cursor: pointer;
+}
+.autocomplete-cidades span:hover{
+    background: #388561;
 }
 .nao-encontrado{
     width: 100%;
