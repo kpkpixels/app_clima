@@ -23,7 +23,7 @@ campoBuscaInput.addEventListener("input", function (e) {
 function chamadaApi() {
   //const APIKey = config.APIKey;
   const APIKey = "51c2f701a9d1b5bc7c8b4611dd662911";
-  const cidade = document.querySelector(".campo-pesquisa input").value;
+  const cidade = document.querySelector(".campo-pesquisa input").value.split("-")[0].normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
   autocompleteCidades.classList.add("oculta-tela");
 
