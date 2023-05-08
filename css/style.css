@@ -188,6 +188,20 @@ body{
     font-weight: 500;
     margin-top: 12px;
 }
+.carregando{
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    height: 70px;
+    display: none;
+}
+.carregando p{
+    color: var(--primeira-cor);
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: 12px;
+}
 .clima-box, .clima-detalhes{
     scale: 0;
     opacity: 0;

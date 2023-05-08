@@ -5,6 +5,7 @@ const climaBox = document.querySelector(".clima-box");
 const climaDetalhes = document.querySelector(".clima-detalhes");
 const error404 = document.querySelector(".nao-encontrado");
 const autocompleteCidades = document.querySelector(".autocomplete-cidades");
+const carregando = document.querySelector(".carregando");
 
 campoBusca.addEventListener("click", () => {
   chamadaApi();
@@ -25,6 +26,9 @@ function chamadaApi() {
 
   autocompleteCidades.classList.add("oculta-tela");
 
+  container.style.height = "220px"
+  carregando.style.display = "block";
+
   if (cidade === "") {
     return;
   }
@@ -34,9 +38,11 @@ function chamadaApi() {
   )
     .then((result) => result.json())
     .then((json) => {
+      carregando.style.display = "none";
       if (json.cod === "404") {
         climaBox.classList.add("oculta-tela");
         climaDetalhes.classList.add("oculta-tela");
+        container.style.height = "430px"
         error404.classList.remove("oculta-tela");
         error404.style.display = "block";
         error404.classList.add("fadeIn");
