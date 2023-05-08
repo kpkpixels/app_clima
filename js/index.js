@@ -22,7 +22,7 @@ campoBuscaInput.addEventListener("input", function (e) {
 
 function chamadaApi() {
   const APIKey = config.APIKey;
-  const cidade = document.querySelector(".campo-pesquisa input").value;
+  const cidade = document.querySelector(".campo-pesquisa input").value.split("-")[0].normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
   autocompleteCidades.classList.add("oculta-tela");
 
@@ -104,7 +104,7 @@ function chamadaApi() {
       umidade.innerHTML = `${json.main.humidity}%`;
       vento.innerHTML = `${parseFloat(json.wind.speed)} Km/h`;
 
-      campoBuscaInput.value = campoBuscaInput.value + " - " + json.sys.country;
+      campoBuscaInput.value = campoBuscaInput.value.split(" - ")[0] + " - " + json.sys.country;
 
       climaBox.classList.remove("oculta-tela");
       climaDetalhes.classList.remove("oculta-tela");
