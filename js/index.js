@@ -94,6 +94,8 @@ function chamadaApi() {
           image.src = "";
       }
 
+      if (cidade === "abu dhabi") { image.src = "imagens/abudhabi.png"; }
+
       temperatura.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
       temperaturaMax.innerHTML = `${parseInt(
         json.main.temp_max
