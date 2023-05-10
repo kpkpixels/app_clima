@@ -8,11 +8,11 @@ const autocompleteCidades = document.querySelector(".autocomplete-cidades");
 const carregando = document.querySelector(".carregando");
 
 campoBusca.addEventListener("click", () => {
-  chamadaApi();
+  validaCidade();
 });
 campoBuscaInput.addEventListener("keydown", function (e) {
   if (e.code == "Enter") {
-    chamadaApi();
+    validaCidade();
   }
 });
 
@@ -20,19 +20,24 @@ campoBuscaInput.addEventListener("input", function (e) {
     matchMunicipio();
 });
 
-function chamadaApi() {
-  //const APIKey = config.APIKey;
-  const APIKey = "51c2f701a9d1b5bc7c8b4611dd662911";
-  const cidade = document.querySelector(".campo-pesquisa input").value.split("-")[0].normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-
-  autocompleteCidades.classList.add("oculta-tela");
-
-  container.style.height = "220px"
-  carregando.style.display = "block";
-
+function validaCidade(){  
+  let cidade = document.querySelector(".campo-pesquisa input").value.split(",")[0];
+  //let cidade = document.querySelector(".campo-pesquisa input").value.split(",")[0].normalize('NFD').replace(/[\u0300-\u036f]/g, ''); //tira acentos e deixa minusculo
+  //cidade = cidade.replace(/[\W_]+/g, " "); 
+  
   if (cidade === "") {
     return;
   }
+  else{
+    buscaDados(cidade);
+  }
+}
+
+function buscaDados(cidade) {
+  //const APIKey = config.APIKey;
+  const APIKey = "51c2f701a9d1b5bc7c8b4611dd662911";
+
+  carregandoInfo();
 
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&units=metric&lang=pt_br&APPID=${APIKey}`
@@ -40,6 +45,7 @@ function chamadaApi() {
     .then((result) => result.json())
     .then((json) => {
       carregando.style.display = "none";
+
       if (json.cod === "404") {
         climaBox.classList.add("oculta-tela");
         climaDetalhes.classList.add("oculta-tela");
@@ -51,19 +57,9 @@ function chamadaApi() {
       }
       error404.classList.remove("fadeIn");
 
-      const image = document.querySelector(".clima-box img");
-      const temperatura = document.querySelector(".clima-box .temperatura");
-      const temperaturaMax = document.querySelector(
-        ".clima-box .temperaturaMax"
-      );
-      const temperaturaMin = document.querySelector(
-        ".clima-box .temperaturaMin"
-      );
-      const descricao = document.querySelector(".clima-box .descricao");
-      const umidade = document.querySelector(".clima-detalhes .umidade span");
-      const vento = document.querySelector(".clima-detalhes .vento span");
+      const image = document.querySelector(".clima-box img");      
 
-      console.log(json);
+      //console.log(json);
 
       switch (json.weather[0].main) {
         case "Clear": {
@@ -94,31 +90,10 @@ function chamadaApi() {
           image.src = "";
       }
 
+      //easter egg
       if (cidade === "abu dhabi") { image.src = "imagens/abudhabi.png"; }
 
-      temperatura.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
-      temperaturaMax.innerHTML = `${parseInt(
-        json.main.temp_max
-      )}°C  <i class="fas fa-arrow-up"></i>`;
-      temperaturaMin.innerHTML = `${parseInt(
-        json.main.temp_min
-      )}°C  <i class="fas fa-arrow-down"></i>`;
-      descricao.innerHTML = `${json.weather[0].description}`;
-      umidade.innerHTML = `${json.main.humidity}%`;
-      vento.innerHTML = `${parseFloat(json.wind.speed)} Km/h`;
-
-      campoBuscaInput.value = campoBuscaInput.value.split(" - ")[0] + " - " + json.sys.country;
-
-      climaBox.classList.remove("oculta-tela");
-      climaDetalhes.classList.remove("oculta-tela");
-
-      climaBox.style.display = "";
-      climaDetalhes.style.display = "";
-      climaBox.classList.add("fadeIn");
-      climaDetalhes.classList.add("fadeIn");
-      container.style.height = "590px";
-
-      //getMunicipios();
+      montaInformacoesTela(json);            
     });
 }
 
@@ -153,7 +128,7 @@ function matchMunicipio() {
         campoBuscaInput.value = this.getElementsByTagName("input")[0].value;
         
         limparListaCidades();
-        chamadaApi();
+        validaCidade();
       });
       autocompleteCidades.appendChild(b);
       cont++;
@@ -168,11 +143,10 @@ function getMunicipios() {
     .then((result) => result.json())
     .then((json) => {
       for (let i = 0; i < json.length; i++) {
-        console.log('"' + json[i].nome + '",');
+        console.log('"' + json[i].nome + ", " +json[i].microrregiao.mesorregiao.UF.sigla +'",');
       }
     });
 }
-
 
 function limparListaCidades() {
   var x = document.getElementsByClassName("autocomplete-itens");
@@ -182,3 +156,65 @@ function limparListaCidades() {
   }
   container.style.height = "105px";
 }
+
+function carregandoInfo(){  
+  autocompleteCidades.classList.add("oculta-tela");
+  container.style.height = "220px"
+  carregando.style.display = "block";
+}
+
+function montaInformacoesTela(info) {
+  const temperatura = document.querySelector(".clima-box .temperatura");
+  const temperaturaMax = document.querySelector(".clima-box .temperaturaMax");
+  const temperaturaMin = document.querySelector(".clima-box .temperaturaMin");
+  const descricao = document.querySelector(".clima-box .descricao");
+  const umidade = document.querySelector(".clima-detalhes .umidade span");
+  const vento = document.querySelector(".clima-detalhes .vento span");
+
+  temperatura.innerHTML = `${parseInt(info.main.temp)}<span>°C</span>`;
+  temperaturaMax.innerHTML = `${parseInt(
+    info.main.temp_max
+  )}°C  <i class="fas fa-arrow-up"></i>`;
+  temperaturaMin.innerHTML = `${parseInt(
+    info.main.temp_min
+  )}°C  <i class="fas fa-arrow-down"></i>`;
+  descricao.innerHTML = `${info.weather[0].description}`;
+  umidade.innerHTML = `${info.main.humidity}%`;
+  vento.innerHTML = `${parseFloat(info.wind.speed)} Km/h`;
+
+  campoBuscaInput.value =
+    campoBuscaInput.value.split(" - ")[0] + " - " + info.sys.country;
+
+  climaBox.classList.remove("oculta-tela");
+  climaDetalhes.classList.remove("oculta-tela");
+
+  climaBox.style.display = "";
+  climaDetalhes.style.display = "";
+  climaBox.classList.add("fadeIn");
+  climaDetalhes.classList.add("fadeIn");
+  container.style.height = "590px";
+}
+
+//pega a localizaçao do navegador
+function getGeolocation() {  
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(getLocalizacao);
+  } else { 
+    alert("Geolocation não é suportada neste navegador.");
+  }
+}
+function getLocalizacao(position) {
+  fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=pt-BR`)
+  .then(res => res.json())
+  .then(data => {
+    //buscaDados(data.city);
+    campoBuscaInput.value = data.city + ", " + data.principalSubdivisionCode.split("-")[1];
+    validaCidade();
+  });
+}
+
+
+//carregou a pagina, ele chama essa funçao
+window.onload = function() {
+  getGeolocation();
+};
