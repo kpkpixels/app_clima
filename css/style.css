@@ -218,3 +218,29 @@ body{
     }
 }
 
+@media only screen and (max-width: 500px) {
+    .campo-pesquisa input{
+        font-size: 18px;
+    }
+    .campo-pesquisa input::placeholder{
+        font-size: 18px;
+    }
+}
+
+@media only screen and (max-width: 340px) {
+    .clima-detalhes{
+        display: block;
+    }
+    .clima-detalhes .umidade, .clima-detalhes .vento{
+        padding-left: 0px;
+        justify-content: space-between;
+        height: 80px;
+    }
+    .clima-detalhes span{
+        font-size: 15px;
+    }
+    .clima-detalhes i{
+        font-size: 15px;
+    }
+}
+
