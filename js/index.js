@@ -14,13 +14,16 @@ campoBuscaInput.addEventListener("keydown", function (e) {
   if (e.code == "Enter") {
     validaCidade();
   }
+  ajustaTamanhoTexto();
 });
 
 campoBuscaInput.addEventListener("input", function (e) {
     matchMunicipio();
 });
 
-function validaCidade(){  
+function validaCidade(){    
+  ajustaTamanhoTexto();
+
   let cidade = document.querySelector(".campo-pesquisa input").value.split(",")[0];
   //let cidade = document.querySelector(".campo-pesquisa input").value.split(",")[0].normalize('NFD').replace(/[\u0300-\u036f]/g, ''); //tira acentos e deixa minusculo
   //cidade = cidade.replace(/[\W_]+/g, " "); 
@@ -157,7 +160,7 @@ function limparListaCidades() {
   container.style.height = "105px";
 }
 
-function carregandoInfo(){  
+function carregandoInfo(){   
   autocompleteCidades.classList.add("oculta-tela");
   container.style.height = "220px"
   carregando.style.display = "block";
@@ -193,6 +196,7 @@ function montaInformacoesTela(info) {
   climaBox.classList.add("fadeIn");
   climaDetalhes.classList.add("fadeIn");
   container.style.height = "590px";
+  ajustaTamanhoTexto();
 }
 
 //pega a localizaçao do navegador
@@ -213,6 +217,18 @@ function getLocalizacao(position) {
   });
 }
 
+//gambiarra dus guri pra ajustar o tamanho do texto
+function ajustaTamanhoTexto(){
+  if (campoBuscaInput.value.length > 19 && campoBuscaInput.value.length < 26){
+    campoBuscaInput.style.fontSize = (42 - campoBuscaInput.value.length)  + "px";
+  }
+  else if (campoBuscaInput.value.length >= 26){
+    campoBuscaInput.style.fontSize = "17px";
+  }
+  else if (campoBuscaInput.value.length <= 19){
+    campoBuscaInput.style.fontSize = "24px";
+  }
+}
 
 //carregou a pagina, ele chama essa funçao
 window.onload = function() {
