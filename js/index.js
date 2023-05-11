@@ -233,6 +233,9 @@ function ajustaTamanhoTexto(){
   else if (campoBuscaInput.value.length <= 19){
     campoBuscaInput.style.fontSize = "24px";
   }
+  else{
+    campoBuscaInput.style.fontSize = "24px";
+  }
 }
 
 //carregou a pagina, ele chama essa funçao
