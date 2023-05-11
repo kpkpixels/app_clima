@@ -8,7 +8,9 @@ const autocompleteCidades = document.querySelector(".autocomplete-cidades");
 const carregando = document.querySelector(".carregando");
 const botaoLocalizacao = document.querySelector(".btLocalizacao");
 const textoTooltipNomeCidade = document.querySelector(".tooltipNomeCidade");
+const botaoTema = document.querySelector(".btTema");
 
+//#region listeners
 botaoLocalizacao.addEventListener("click", () => {
   getGeolocation();
 });
@@ -21,10 +23,13 @@ campoBuscaInput.addEventListener("keydown", function (e) {
   }
   ajustaTamanhoTexto();
 });
-
 campoBuscaInput.addEventListener("input", function (e) {
     matchMunicipio();
 });
+botaoTema.addEventListener("click", () => {
+  mudaTema();
+});
+//#endregion
 
 function validaCidade(){    
   ajustaTamanhoTexto();
@@ -52,7 +57,7 @@ function buscaDados(cidade) {
   )
     .then((result) => result.json())
     .then((json) => {
-      carregando.style.display = "none";
+      carregando.style.display = "none";           
       textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
 
       if (json.cod === "404") {
@@ -172,6 +177,20 @@ function carregandoInfo(){
   container.style.height = "220px"
   carregando.style.display = "block";
 }
+function mudaTema(){
+  if (document.body.className === "tema-escuro"){
+    document.body.classList.remove("tema-escuro");
+    botaoTema.classList.remove("fa-sun");
+    botaoTema.classList.add("fa-moon");
+    botaoTema.innerHTML = '<span class="tooltipTextoLeft" style="width: 91px;">Tema Escuro<i class="fa-solid fa-sort-up"></i></span>';
+  }
+  else{
+    document.body.classList.add("tema-escuro");
+    botaoTema.classList.remove("fa-moon");
+    botaoTema.classList.add("fa-sun");
+    botaoTema.innerHTML = '<span class="tooltipTextoLeft" style="width: 91px;">Tema Claro<i class="fa-solid fa-sort-up"></i></span>';
+  }
+}
 
 function montaInformacoesTela(info) {
   const temperatura = document.querySelector(".clima-box .temperatura");
@@ -205,7 +224,6 @@ function montaInformacoesTela(info) {
   climaBox.classList.add("fadeIn");
   climaDetalhes.classList.add("fadeIn");
   container.style.height = "590px";
-  ajustaTamanhoTexto();
 }
 
 //pega a localizaçao do navegador
@@ -250,10 +268,20 @@ function ajustaTamanhoTexto(){
     campoBuscaInput.style.fontSize = TAMANHO_PADRAO + "px";
   }
 }
+function setaTemaByHour(){
+  const hora = new Date().getHours();
+  
+  if (hora >= 18 && hora <= 6){
+    mudaTema();
+  }
+  else{
+    document.body.classList.add("tema-escuro"); //gambiarra pra enganar a funçao
+    mudaTema();
   }
 }
 
 //carregou a pagina, ele chama essa funçao
 window.onload = function() {
   getGeolocation();
+  setaTemaByHour();
 };

@@ -12,21 +12,31 @@
     <title>Clima</title>
 </head>
 <body>
+    <div class="outside-container">
+        <button class="fa-solid fa-moon btTema tooltip">
+            <span class="tooltipTextoLeft" style="width: 91px;">Tema Escuro 
+                <i class="fa-solid fa-sort-up"></i>
+            </span>                
+        </button>
+    </div>    
     <div class="container">
         <div class="campo-pesquisa">
             <!-- <i class="fa-solid fa-location-dot"></i> -->
             <button class="fa-solid fa-location-crosshairs btLocalizacao tooltip">
-                <span class="tooltipTexto">Localização atual
+                <span class="tooltipTextoUp">Localização atual
                     <i class="fa-solid fa-sort-up"></i>
-                </span>
-                
+                </span>                
             </button>
-            <input type="text" placeholder="Digite sua cidade">                
-            <button class="fa-solid fa-magnifying-glass btPesquisa tooltip">
-                <span class="tooltipTexto">Pesquisar
+            <div class="tooltip" style="width: 70%;">
+                <input type="text" placeholder="Digite sua cidade">                
+                <span class="tooltipTextoUp tooltipNomeCidade">Digite sua cidade
                     <i class="fa-solid fa-sort-up"></i>
-                </span>
-                
+                </span>   
+            </div>
+            <button class="fa-solid fa-magnifying-glass btPesquisa tooltip">
+                <span class="tooltipTextoUp">Pesquisar
+                    <i class="fa-solid fa-sort-up"></i>
+                </span>                
             </button>
         </div>
         <div class="autocomplete-cidades oculta-tela">
@@ -76,7 +86,7 @@
     </div>
     <script src="https://kit.fontawesome.com/7c8801c017.js" crossorigin="anonymous"></script>
     <script src="js/index.js"></script>
-    <script src='js/config.js'></script>
+    <!-- <script src='js/config.js'></script> -->
     <script src='js/cidades.js'></script>
 </body>
 </html>

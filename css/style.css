@@ -3,10 +3,19 @@
     --primeira-cor: #3E7D84;
     --primeira-cor-light: #a0c1c5;
     --segunda-cor: #455D85;
+    --segunda-cor-light: #adb1b9;
+    --terceira-cor: #455D85;
+    --cor-icones: #000;
+    --cor-fundo: #fff;
+}
+body.tema-escuro{
+    --primeira-cor: #3f3e84;
+    --primeira-cor-light: #b4bedf;
+    --segunda-cor: #c8c8c8;
     --segunda-cor-light: #667185;
-    --terceira-cor: #388561;
-    --quarta-cor:#856931;
-    --quinta-cor: #388561;
+    --terceira-cor: #c8c8c8;
+    --cor-icones: #fff;
+    --cor-fundo: #403d4d;
 }
 
 *{
@@ -24,13 +33,14 @@ body{
     background:var(--primeira-cor);
     margin-left: 4vh;
     margin-right: 4vh;
+    transition: 0.6s ease-out;
 }
 
 .container{
     position: relative;
     width: 400px;
     height: 105px;
-    background: #FFF;
+    background: var(--cor-fundo);
     padding: 28px 32px;
     overflow: hidden;
     border-radius: 18px;
@@ -48,11 +58,12 @@ body{
 }
 .campo-pesquisa input{
     color: var(--segunda-cor);
-    width: 70%;
+    /* width: 70%; */
     font-size: 24px;
     font-weight: 500;
     padding-left: 12px;
     text-transform: capitalize;
+    background: none;
 }
 
 .campo-pesquisa input::placeholder{
@@ -61,51 +72,34 @@ body{
     font-weight: 500;
     text-transform: capitalize;
 }
-.btPesquisa{
+button{
     display: inline-flex !important;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     width: 50px;
     height: 50px;
-    color: #000;
     background: var(--primeira-cor-light);
-    border-radius: 50%;
     font-size: 22px;
+    border-radius: 50%;
     transition: 0.4s;
+    color: var(--cor-icones);
 }
-.btPesquisa:hover{
+button:hover{
     color: #FFF;
     background: var(--primeira-cor);
 }
-.btLocalizacao{
-    display: inline-flex !important;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    font-size: 22px;
-    border-radius: 50%;
+.btLocalizacao{    
     background: none;
-    transition: 0.4s;
 }
 .btLocalizacao:hover{
-    cursor: pointer;
-    border-radius: 50%;
     font-size: 25px;
-    transition: 0.4s;
-    color: #FFF;
-    background: var(--primeira-cor);
 }
-.btLocalizacaoHighlight{
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-    color: #000;
-    background: var(--primeira-cor-light);
-    border-radius: 50%;
-    font-size: 22px;
-    transition: 0.4s;
+.btTema{
+    box-shadow: 1px 1px 4px black;
+    position: absolute;
+    top: 15px;
+    right: 15px;
 }
 
 .campo-pesquisa i{
@@ -139,7 +133,7 @@ body{
     font-size: 1.5rem;
 }
 .clima-box .descricao{
-    color: var(--primeira-cor);
+    color: var(--segunda-cor);
     font-size: 22px;
     font-weight: 500;
     text-transform: capitalize;
@@ -165,15 +159,18 @@ body{
     justify-content: flex-end;
 }
 .clima-detalhes i{
-    color: var(--primeira-cor);
+    color: var(--cor-icones);
     font-size: 26px;
     margin-right: 10px;
     margin-top: 6px;    
 }
 .clima-detalhes span{
-    color: var(--primeira-cor);
+    color: var(--segunda-cor);
     font-size: 22px;
     font-weight: 500;
+}
+.clima-detalhes p{
+    color: var(--terceira-cor);
 }
 .autocomplete-cidades{
     /* height: 250px; */
@@ -195,10 +192,10 @@ body{
     margin: 2px;
 }
 .autocomplete-cidades span strong{
-    color:var(--primeira-cor);
+    color: var(--terceira-cor);
 }
 .autocomplete-cidades span:hover{
-    background: #3e7d846b;
+    background: var(--segunda-cor-light);
 }
 .oculta-tela{
     display: none !important;
@@ -216,7 +213,7 @@ body{
     width: 70%;
 }
 .nao-encontrado p{
-    color: var(--primeira-cor);
+    color: var(--segunda-cor);
     font-size: 22px;
     font-weight: 500;
     margin-top: 12px;
@@ -244,7 +241,7 @@ body{
     animation-delay: 0.5s;
 }
 
-.tooltip .tooltipTexto {
+.tooltip span {
     visibility: hidden;
     /* width: 120px; */
     background-color: black;
@@ -264,12 +261,17 @@ body{
     /* transform: translate(-60%, -30%); */
     display: flex;
     justify-content: center;
-    margin-top: -50px;
+    margin-bottom: 0px;
 }
-.tooltip:hover .tooltipTexto {
+.tooltip:hover .tooltipTextoUp {
     visibility: visible;
     opacity: 1;
-    margin-top: -100px;
+    margin-bottom: 100px;
+}
+.tooltip:hover .tooltipTextoLeft {
+    visibility: visible;
+    opacity: 1;
+    margin-left: -170px;
 }
 .tooltipNomeCidade{
     text-transform: capitalize;
@@ -278,7 +280,17 @@ body{
     font-weight: 900;
     margin-top: -70px;
 }
+.tooltip .tooltipTextoUp i{
+    position: absolute;
+    color: #000;
+    font-size: 28px;
     transform: rotate(180deg);
+}
+.tooltip .tooltipTextoLeft i{
+    position: absolute;
+    color: #000;
+    margin-left: 88px;
+    transform: rotate(90deg);
 }
 
 @keyframes fadeIn {
@@ -290,10 +302,10 @@ body{
 
 @media only screen and (max-width: 500px) {
     .campo-pesquisa input{
-        font-size: 18px;
+        font-size: 17px;
     }
     .campo-pesquisa input::placeholder{
-        font-size: 18px;
+        font-size: 17px;
     }
 }
 
