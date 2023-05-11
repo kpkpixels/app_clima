@@ -183,12 +183,14 @@ function mudaTema(){
     botaoTema.classList.remove("fa-sun");
     botaoTema.classList.add("fa-moon");
     botaoTema.innerHTML = '<span class="tooltipTextoLeft" style="width: 91px;">Tema Escuro<i class="fa-solid fa-sort-up"></i></span>';
+    document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#3E7D84');
   }
   else{
     document.body.classList.add("tema-escuro");
     botaoTema.classList.remove("fa-moon");
     botaoTema.classList.add("fa-sun");
     botaoTema.innerHTML = '<span class="tooltipTextoLeft" style="width: 91px;">Tema Claro<i class="fa-solid fa-sort-up"></i></span>';
+    document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#3f3e84');
   }
 }
 
