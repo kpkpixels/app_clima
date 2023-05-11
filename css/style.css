@@ -48,10 +48,10 @@ body{
 }
 .campo-pesquisa input{
     color: var(--segunda-cor);
-    width: 80%;
+    width: 70%;
     font-size: 24px;
     font-weight: 500;
-    padding-left: 32px;
+    padding-left: 12px;
     text-transform: capitalize;
 }
 
@@ -61,7 +61,10 @@ body{
     font-weight: 500;
     text-transform: capitalize;
 }
-.campo-pesquisa button{
+.btPesquisa{
+    display: inline-flex !important;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     width: 50px;
     height: 50px;
@@ -71,10 +74,40 @@ body{
     font-size: 22px;
     transition: 0.4s;
 }
-.campo-pesquisa button:hover{
+.btPesquisa:hover{
     color: #FFF;
     background: var(--primeira-cor);
 }
+.btLocalizacao{
+    display: inline-flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
+    border-radius: 50%;
+    background: none;
+    transition: 0.4s;
+}
+.btLocalizacao:hover{
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 25px;
+    transition: 0.4s;
+    color: #FFF;
+    background: var(--primeira-cor);
+}
+.btLocalizacaoHighlight{
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    color: #000;
+    background: var(--primeira-cor-light);
+    border-radius: 50%;
+    font-size: 22px;
+    transition: 0.4s;
+}
+
 .campo-pesquisa i{
     position: absolute;
     color: #000;
@@ -206,9 +239,40 @@ body{
     scale: 0;
     opacity: 0;
 }
-.fadeIn{
+.fadeIn {
     animation: 0.5s fadeIn forwards;
     animation-delay: 0.5s;
+}
+
+.tooltip .tooltipTexto {
+    visibility: hidden;
+    /* width: 120px; */
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;    
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    padding: 10px;
+    box-shadow: 1px 1px 4px black;
+    
+    opacity: 0;
+    transition: 0.2s ease-in;
+    position: fixed;
+    z-index: 1;
+    /* transform: translate(-60%, -30%); */
+    display: flex;
+    justify-content: center;
+    margin-top: -50px;
+}
+.tooltip:hover .tooltipTexto {
+    visibility: visible;
+    opacity: 1;
+    margin-top: -100px;
+}
+.tooltip .tooltipTexto i{
+    transform: rotate(180deg);
 }
 
 @keyframes fadeIn {

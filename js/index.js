@@ -1,12 +1,16 @@
 const container = document.querySelector(".container");
 const campoBuscaInput = document.querySelector(".campo-pesquisa input");
-const campoBusca = document.querySelector(".campo-pesquisa button");
+const campoBusca = document.querySelector(".btPesquisa");
 const climaBox = document.querySelector(".clima-box");
 const climaDetalhes = document.querySelector(".clima-detalhes");
 const error404 = document.querySelector(".nao-encontrado");
 const autocompleteCidades = document.querySelector(".autocomplete-cidades");
 const carregando = document.querySelector(".carregando");
+const botaoLocalizacao = document.querySelector(".btLocalizacao");
 
+botaoLocalizacao.addEventListener("click", () => {
+  getGeolocation();
+});
 campoBusca.addEventListener("click", () => {
   validaCidade();
 });
@@ -58,6 +62,7 @@ function buscaDados(cidade) {
         error404.classList.add("fadeIn");
         return;
       }
+      error404.style.display = "none";
       error404.classList.remove("fadeIn");
 
       const image = document.querySelector(".clima-box img");      
