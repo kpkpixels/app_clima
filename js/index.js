@@ -7,6 +7,7 @@ const error404 = document.querySelector(".nao-encontrado");
 const autocompleteCidades = document.querySelector(".autocomplete-cidades");
 const carregando = document.querySelector(".carregando");
 const botaoLocalizacao = document.querySelector(".btLocalizacao");
+const textoTooltipNomeCidade = document.querySelector(".tooltipNomeCidade");
 
 botaoLocalizacao.addEventListener("click", () => {
   getGeolocation();
@@ -52,6 +53,7 @@ function buscaDados(cidade) {
     .then((result) => result.json())
     .then((json) => {
       carregando.style.display = "none";
+      textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
 
       if (json.cod === "404") {
         climaBox.classList.add("oculta-tela");
@@ -190,8 +192,10 @@ function montaInformacoesTela(info) {
   umidade.innerHTML = `${info.main.humidity}%`;
   vento.innerHTML = `${parseFloat(info.wind.speed)} Km/h`;
 
-  campoBuscaInput.value =
-    campoBuscaInput.value.split(" - ")[0] + " - " + info.sys.country;
+  // campoBuscaInput.value =
+  //   campoBuscaInput.value.split(" - ")[0] + " - " + info.sys.country;
+  
+  getLocalizacaoByLatLong(info.coord.lat, info.coord.lon);
 
   climaBox.classList.remove("oculta-tela");
   climaDetalhes.classList.remove("oculta-tela");
@@ -212,29 +216,40 @@ function getGeolocation() {
     alert("Geolocation não é suportada neste navegador.");
   }
 }
-function getLocalizacao(position) {
-  fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=pt-BR`)
+function getLocalizacao(posicao){
+  getLocalizacaoByLatLong(posicao.coords.latitude, posicao.coords.longitude, true);
+}
+
+function getLocalizacaoByLatLong(latitude, longitude, geolocation = false) {
+  fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=pt-BR`)
   .then(res => res.json())
   .then(data => {
     //buscaDados(data.city);
-    campoBuscaInput.value = data.city + ", " + data.principalSubdivisionCode.split("-")[1];
-    validaCidade();
+    campoBuscaInput.value = data.city + ", " + data.principalSubdivisionCode.split("-")[1] + " - " + data.principalSubdivisionCode.split("-")[0];    
+    textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
+    ajustaTamanhoTexto();
+
+    if (geolocation){ validaCidade(); }
   });
 }
 
 //gambiarra dus guri pra ajustar o tamanho do texto
 function ajustaTamanhoTexto(){
+  const TAMANHO_PADRAO = 24;
+
   if (campoBuscaInput.value.length > 19 && campoBuscaInput.value.length < 26){
-    campoBuscaInput.style.fontSize = (42 - campoBuscaInput.value.length)  + "px";
+    campoBuscaInput.style.fontSize = ((TAMANHO_PADRAO + 18) - campoBuscaInput.value.length)  + "px";
   }
   else if (campoBuscaInput.value.length >= 26){
-    campoBuscaInput.style.fontSize = "17px";
+    campoBuscaInput.style.fontSize = TAMANHO_PADRAO - 7 + "px";
   }
   else if (campoBuscaInput.value.length <= 19){
-    campoBuscaInput.style.fontSize = "24px";
+    campoBuscaInput.style.fontSize = TAMANHO_PADRAO + "px";
   }
   else{
-    campoBuscaInput.style.fontSize = "24px";
+    campoBuscaInput.style.fontSize = TAMANHO_PADRAO + "px";
+  }
+}
   }
 }
 

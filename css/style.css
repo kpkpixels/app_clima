@@ -271,7 +271,13 @@ body{
     opacity: 1;
     margin-top: -100px;
 }
-.tooltip .tooltipTexto i{
+.tooltipNomeCidade{
+    text-transform: capitalize;
+}
+.tooltip:hover .tooltipNomeCidade{
+    font-weight: 900;
+    margin-top: -70px;
+}
     transform: rotate(180deg);
 }
 
