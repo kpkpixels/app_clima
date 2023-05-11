@@ -273,11 +273,11 @@ function ajustaTamanhoTexto(){
 function setaTemaByHour(){
   const hora = new Date().getHours();
   
-  if (hora >= 18 && hora <= 6){
+  if (hora < 18 && hora > 5){
+    document.body.classList.add("tema-escuro"); //gambiarra pra enganar a funçao
     mudaTema();
   }
   else{
-    document.body.classList.add("tema-escuro"); //gambiarra pra enganar a funçao
     mudaTema();
   }
 }
