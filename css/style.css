@@ -227,7 +227,7 @@ button:hover{
     display: none;
 }
 .carregando p{
-    color: var(--primeira-cor);
+    color: var(--segunda-cor);
     font-size: 22px;
     font-weight: 500;
     margin-top: 12px;

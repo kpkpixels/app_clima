@@ -50,14 +50,14 @@ function buscaDados(cidade) {
   //const APIKey = config.APIKey;
   const APIKey = "51c2f701a9d1b5bc7c8b4611dd662911";
 
-  carregandoInfo();
+  mostraCarregando("Buscando informações, aguarde...");
 
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&units=metric&lang=pt_br&APPID=${APIKey}`
   )
     .then((result) => result.json())
     .then((json) => {
-      carregando.style.display = "none";           
+      ocultaCarregando();         
       textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
 
       if (json.cod === "404") {
@@ -172,11 +172,17 @@ function limparListaCidades() {
   container.style.height = "105px";
 }
 
-function carregandoInfo(){   
+function mostraCarregando(msgLoading){   
   autocompleteCidades.classList.add("oculta-tela");
   container.style.height = "220px"
+  carregando.innerHTML = "<p>"+msgLoading+"</p>";
   carregando.style.display = "block";
 }
+function ocultaCarregando(){ 
+  container.style.height = "105px"   
+  carregando.style.display = "none";  
+}
+
 function mudaTema(){
   if (document.body.className === "tema-escuro"){
     document.body.classList.remove("tema-escuro");
@@ -229,14 +235,16 @@ function montaInformacoesTela(info) {
 }
 
 //pega a localizaçao do navegador
-function getGeolocation() {  
+function getGeolocation() { 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(getLocalizacao);
   } else { 
+    ocultaCarregando();
     alert("Geolocation não é suportada neste navegador.");
   }
 }
-function getLocalizacao(posicao){
+function getLocalizacao(posicao){ 
+  mostraCarregando("Buscando localização, aguarde...");
   getLocalizacaoByLatLong(posicao.coords.latitude, posicao.coords.longitude, true);
 }
 
