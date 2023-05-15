@@ -49,19 +49,20 @@ function validaCidade(){
 
 function buscaDados(cidade) {
   //const APIKey = config.APIKey;
-  const APIKey = "51c2f701a9d1b5bc7c8b4611dd662911";
+  const APIKey = "c21d5353";
 
   mostraCarregando("Buscando informações, aguarde...");
 
-  fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&units=metric&lang=pt_br&APPID=${APIKey}`
+  fetch( 
+    `https://api.hgbrasil.com/weather?format=json-cors&key=${APIKey}&city_name=${cidade}`
   )
     .then((result) => result.json())
     .then((json) => {
+      console.log(json);
       ocultaCarregando();         
       textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
 
-      if (json.cod === "404") {
+      if (json.by === "default") {
         climaBox.classList.add("oculta-tela");
         climaDetalhes.classList.add("oculta-tela");
         container.style.height = "430px"
@@ -77,29 +78,45 @@ function buscaDados(cidade) {
 
       //console.log(json);
 
-      switch (json.weather[0].main) {
-        case "Clear": {
+      switch (json.results.condition_slug) {
+        case "clear_day": {
           image.src = "imagens/limpo.png";
           break;
         }
-        case "Rain": {
+        case "clear_night": {
+          image.src = "imagens/limpo.png";
+          break;
+        }
+        case "rain": {
           image.src = "imagens/chuvoso.png";
           break;
         }
-        case "Snow": {
+        case "snow": {
           image.src = "imagens/neve.png";
           break;
         }
-        case "Clouds": {
-          image.src = "imagens/nuvens.png";
-          break;
-        }
-        case "Haze": {
+        case "cloud": {
           image.src = "imagens/nublado.png";
           break;
         }
-        case "Fog": {
+        case "cloudly_day": {
           image.src = "imagens/nublado.png";
+          break;
+        }
+        case "cloudly_night": {
+          image.src = "imagens/nublado.png";
+          break;
+        }
+        case "fog": {
+          image.src = "imagens/nublado.png";
+          break;
+        }
+        case "storm": {
+          image.src = "imagens/tempestade.png";
+          break;
+        }
+        case "hail": {
+          image.src = "imagens/granizo.png";
           break;
         }
         default:
@@ -109,7 +126,7 @@ function buscaDados(cidade) {
       //easter egg
       if (cidade === "abu dhabi") { image.src = "imagens/abudhabi.png"; }
 
-      montaInformacoesTela(json);            
+      montaInformacoesTela(json.results);            
     });
 }
 
@@ -209,21 +226,25 @@ function montaInformacoesTela(info) {
   const umidade = document.querySelector(".clima-detalhes .umidade span");
   const vento = document.querySelector(".clima-detalhes .vento span");
 
-  temperatura.innerHTML = `${parseInt(info.main.temp)}<span>°C</span>`;
+  temperatura.innerHTML = `${parseInt(info.temp)}<span>°C</span>`;
   temperaturaMax.innerHTML = `${parseInt(
-    info.main.temp_max
+    info.forecast[0].max
   )}°C  <i class="fas fa-arrow-up"></i>`;
   temperaturaMin.innerHTML = `${parseInt(
-    info.main.temp_min
+    info.forecast[0].min
   )}°C  <i class="fas fa-arrow-down"></i>`;
-  descricao.innerHTML = `${info.weather[0].description}`;
-  umidade.innerHTML = `${info.main.humidity}%`;
-  vento.innerHTML = `${parseFloat(info.wind.speed)} Km/h`;
+  descricao.innerHTML = `${info.description}`;
+  umidade.innerHTML = `${info.humidity}%`;
+  vento.innerHTML = `${parseFloat(info.wind_speedy)} Km/h`;
 
   // campoBuscaInput.value =
   //   campoBuscaInput.value.split(" - ")[0] + " - " + info.sys.country;
   
-  getLocalizacaoByLatLong(info.coord.lat, info.coord.lon);
+  campoBuscaInput.value = info.city;    
+  textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
+  ajustaTamanhoTexto();
+
+  //getLocalizacaoByLatLong(info.coord.lat, info.coord.lon);
 
   climaBox.classList.remove("oculta-tela");
   climaDetalhes.classList.remove("oculta-tela");
