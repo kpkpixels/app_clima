@@ -32,6 +32,7 @@ botaoTema.addEventListener("click", () => {
 //#endregion
 
 function validaCidade(){    
+  campoBuscaInput.focus();
   ajustaTamanhoTexto();
 
   let cidade = document.querySelector(".campo-pesquisa input").value.split(",")[0];
@@ -292,6 +293,7 @@ function setaTemaByHour(){
 
 //carregou a pagina, ele chama essa funçao
 window.onload = function() {
+  campoBuscaInput.focus();
   getGeolocation();
   setaTemaByHour();
 };
