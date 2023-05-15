@@ -31,7 +31,7 @@ botaoTema.addEventListener("click", () => {
 });
 //#endregion
 
-function validaCidade(){    
+async function validaCidade(){    
   campoBuscaInput.focus();
   ajustaTamanhoTexto();
 
@@ -43,74 +43,38 @@ function validaCidade(){
     return;
   }
   else{
-    buscaDados(cidade);
+    //buscaDados(cidade);
+    fetchAPI(await getLatLongByEndereço(cidade));
   }
 }
 
-function buscaDados(cidade) {
-  //const APIKey = config.APIKey;
-  const APIKey = "51c2f701a9d1b5bc7c8b4611dd662911";
+function fetchAPI(info){
+  if (info == null){ return; }
 
   mostraCarregando("Buscando informações, aguarde...");
 
-  fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&units=metric&lang=pt_br&APPID=${APIKey}`
-  )
+  var urlAPI = `https://api.open-meteo.com/v1/dwd-icon?latitude=${info[0]}&longitude=${info[0]}&hourly=relativehumidity_2m&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=auto`;
+  
+  fetch(urlAPI)
     .then((result) => result.json())
     .then((json) => {
-      ocultaCarregando();         
-      textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
-
-      if (json.cod === "404") {
-        climaBox.classList.add("oculta-tela");
-        climaDetalhes.classList.add("oculta-tela");
-        container.style.height = "430px"
-        error404.classList.remove("oculta-tela");
-        error404.style.display = "block";
-        error404.classList.add("fadeIn");
-        return;
-      }
-      error404.style.display = "none";
-      error404.classList.remove("fadeIn");
-
-      const image = document.querySelector(".clima-box img");      
-
-      //console.log(json);
-
-      switch (json.weather[0].main) {
-        case "Clear": {
-          image.src = "imagens/limpo.png";
-          break;
-        }
-        case "Rain": {
-          image.src = "imagens/chuvoso.png";
-          break;
-        }
-        case "Snow": {
-          image.src = "imagens/neve.png";
-          break;
-        }
-        case "Clouds": {
-          image.src = "imagens/nuvens.png";
-          break;
-        }
-        case "Haze": {
-          image.src = "imagens/nublado.png";
-          break;
-        }
-        case "Fog": {
-          image.src = "imagens/nublado.png";
-          break;
-        }
-        default:
-          image.src = "";
-      }
-
-      //easter egg
-      if (cidade === "abu dhabi") { image.src = "imagens/abudhabi.png"; }
-
-      montaInformacoesTela(json);            
+      console.log(json);
+      montaDados(json);
     });
+}
+
+function montaDados(dados) {
+  mostraCarregando("Buscando informações, aguarde...");
+
+  ocultaCarregando();
+  textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
+
+  error404.style.display = "none";
+  error404.classList.remove("fadeIn");
+
+  montaImagens(dados.current_weather.weathercode);
+
+  montaInformacoesTela(dados);
 }
 
 function matchMunicipio() {
@@ -183,6 +147,14 @@ function ocultaCarregando(){
   container.style.height = "105px"   
   carregando.style.display = "none";  
 }
+function naoEncontrada(){
+  climaBox.classList.add("oculta-tela");
+          climaDetalhes.classList.add("oculta-tela");
+          container.style.height = "430px"
+          error404.classList.remove("oculta-tela");
+          error404.style.display = "block";
+          error404.classList.add("fadeIn");          
+}
 
 function mudaTema(){
   if (document.body.className === "tema-escuro"){
@@ -201,6 +173,90 @@ function mudaTema(){
   }
 }
 
+function montaImagens(codigoClima){
+  const image = document.querySelector(".clima-box img");
+
+      //easter egg
+      if (campoBuscaInput.value.split(",")[0] === "abu dhabi") { image.src = "imagens/abudhabi.png"; }
+      
+      switch (codigoClima) {
+        case 0: {
+          image.src = "imagens/limpo.png";
+          break;
+        }
+        case 1: {
+          image.src = "imagens/limpo.png";
+          break;
+        }
+        case 2: {
+          image.src = "imagens/nuvens.png";
+          break;
+        }
+        case 3: {
+          image.src = "imagens/nuvens.png";
+          break;
+        }
+        case 45: {
+          image.src = "imagens/nublado.png";
+          break;
+        }
+        case 48: {
+          image.src = "imagens/nublado.png";
+          break;
+        }
+        case 53: {
+          image.src = "imagens/chuvoso.png";
+          break;
+        }
+        case 55: {
+          image.src = "imagens/chuvoso.png";
+          break;
+        }
+        case 51: {
+          image.src = "imagens/chuvoso.png";
+          break;
+        }
+        case 61: {
+          image.src = "imagens/chuvoso.png";
+          break;
+        }
+        case 63: {
+          image.src = "imagens/chuvoso.png";
+          break;
+        }
+        case 65: {
+          image.src = "imagens/chuvoso.png";
+          break;
+        }
+        case 66: {
+          image.src = "imagens/chuvoso.png";
+          break;
+        }
+        case 67: {
+          image.src = "imagens/chuvoso.png";
+          break;
+        }
+        case 71: {
+          image.src = "imagens/neve.png";
+          break;
+        }
+        case 73: {
+          image.src = "imagens/neve.png";
+          break;
+        }
+        case 75: {
+          image.src = "imagens/neve.png";
+          break;
+        }
+        case 77: {
+          image.src = "imagens/neve.png";
+          break;
+        }        
+        default:
+          image.src = "";
+      }
+}
+
 function montaInformacoesTela(info) {
   const temperatura = document.querySelector(".clima-box .temperatura");
   const temperaturaMax = document.querySelector(".clima-box .temperaturaMax");
@@ -209,21 +265,18 @@ function montaInformacoesTela(info) {
   const umidade = document.querySelector(".clima-detalhes .umidade span");
   const vento = document.querySelector(".clima-detalhes .vento span");
 
-  temperatura.innerHTML = `${parseInt(info.main.temp)}<span>°C</span>`;
+  temperatura.innerHTML = `${parseInt(info.current_weather.temperature)}<span>°C</span>`;
   temperaturaMax.innerHTML = `${parseInt(
-    info.main.temp_max
+    info.daily.temperature_2m_max[0]
   )}°C  <i class="fas fa-arrow-up"></i>`;
   temperaturaMin.innerHTML = `${parseInt(
-    info.main.temp_min
+    info.daily.temperature_2m_min[0]
   )}°C  <i class="fas fa-arrow-down"></i>`;
-  descricao.innerHTML = `${info.weather[0].description}`;
-  umidade.innerHTML = `${info.main.humidity}%`;
-  vento.innerHTML = `${parseFloat(info.wind.speed)} Km/h`;
+  // descricao.innerHTML = `${info.weather[0].description}`;
+  umidade.innerHTML = `99%`;
+  vento.innerHTML = `${parseFloat(info.current_weather.windspeed)} Km/h`;
 
-  // campoBuscaInput.value =
-  //   campoBuscaInput.value.split(" - ")[0] + " - " + info.sys.country;
-  
-  getLocalizacaoByLatLong(info.coord.lat, info.coord.lon);
+  //getLocalizacaoByLatLong(info.coord.lat, info.coord.lon);
 
   climaBox.classList.remove("oculta-tela");
   climaDetalhes.classList.remove("oculta-tela");
@@ -246,19 +299,35 @@ function getGeolocation() {
 }
 function getLocalizacao(posicao){ 
   mostraCarregando("Buscando localização, aguarde...");
-  getLocalizacaoByLatLong(posicao.coords.latitude, posicao.coords.longitude, true);
+  fetchAPI([posicao.coords.latitude, posicao.coords.longitude]);
 }
 
-function getLocalizacaoByLatLong(latitude, longitude, geolocation = false) {
-  fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=pt-BR`)
+function getLatLongByEndereço(cidade){
+  return new Promise((resolve, reject) => {
+    fetch(`https://geocode.maps.co/search?q={${cidade}}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.length == 0) {
+          naoEncontrada();
+          return;
+        }
+
+        const dados = [data[0].lat, data[0].lon];
+        getLocalizacaoByLatLong(dados);
+        resolve(dados);
+      })
+      .catch(error => reject(error));
+  });
+}
+
+function getLocalizacaoByLatLong(info) {
+  fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${info[0]}&longitude=${info[1]}&localityLanguage=pt-BR`)
   .then(res => res.json())
   .then(data => {
     //buscaDados(data.city);
     campoBuscaInput.value = data.city + ", " + data.principalSubdivisionCode.split("-")[1] + " - " + data.principalSubdivisionCode.split("-")[0];    
     textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
     ajustaTamanhoTexto();
-
-    if (geolocation){ validaCidade(); }
   });
 }
 
