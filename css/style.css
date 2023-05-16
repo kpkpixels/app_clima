@@ -7,6 +7,9 @@
     --terceira-cor: #455D85;
     --cor-icones: #000;
     --cor-fundo: #fff;
+    --cor-fundo-darker:#94bec3;
+    --cor-temperatura-min: #418F9C;
+    --cor-temperatura-max: #c72d2d;
 }
 body.tema-escuro{
     --primeira-cor: #3f3e84;
@@ -16,6 +19,9 @@ body.tema-escuro{
     --terceira-cor: #c8c8c8;
     --cor-icones: #fff;
     --cor-fundo: #403d4d;
+    --cor-fundo-darker:#2d2b36;
+    --cor-temperatura-min: #418F9C;
+    --cor-temperatura-max: #c72d2d;
 }
 
 *{
@@ -26,7 +32,7 @@ body.tema-escuro{
     box-sizing: border-box;
 }
 body{
-    height: 100vh;
+    height: 130vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,7 +45,7 @@ body{
 .container{
     position: relative;
     width: 400px;
-    height: 105px;
+    height: 105px; 
     background: var(--cor-fundo);
     padding: 28px 32px;
     overflow: hidden;
@@ -73,6 +79,79 @@ body{
     font-weight: 500;
     text-transform: capitalize;
 }
+.clima-dias{
+    display: flex;
+    justify-content: space-around;
+    font-weight: 600;
+    flex-direction: column;
+    color: var(--segunda-cor);
+    /* background: var(--cor-fundo-darker);
+    padding-left: 22px;
+    border-radius: 7%;
+    padding-right: 22px; */
+}
+.clima-dias p{
+    transition: 0.3s;
+    padding: 10px;
+    text-align: start;
+    width: fit-content;
+    background: var(--cor-fundo-darker);
+    border-radius: 12px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+.clima-dias p:hover{
+    background: black;    
+}
+.clima-dias p i{
+    margin: 4px;
+    transition: 0.3s;
+    transform: rotate(180deg);
+}
+.clima-dias img{
+    width: 35px;
+}
+.clima-dias .clima-dia{
+    margin-top: 3px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    background: var(--cor-fundo-darker);
+    padding: 14px;
+    border-radius: 18px;    
+}
+.clima-dia .dia{
+    background: var(--cor-fundo);
+    width: 60px;
+    text-align: center;
+    height: 60px;
+    align-content: center;
+    display: grid;
+    border-radius: 50%;
+}
+.temperaturas-dia{
+    display: flex;
+    align-items: center;
+}
+.temperaturas-dia span{
+    display: flex;
+    margin-left: 15px;
+    justify-content: flex-end;
+}
+.temperaturas-dia span i{
+    margin-left: 5px;
+}
+.temp-max{
+    color: var(--cor-temperatura-max);
+}
+.temp-min{
+    color: var(--cor-temperatura-min);
+}
+
 button{
     display: inline-flex !important;
     justify-content: center;

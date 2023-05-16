@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="outside-container">
-        <button class="fa-solid fa-moon btTema tooltip">
+        <button class="fa-solid fa-moon btTema tooltip" onclick="mudaTema();">
             <span class="tooltipTextoLeft" style="width: 91px;">Tema Escuro 
                 <i class="fa-solid fa-sort-up"></i>
             </span>                
@@ -24,7 +24,7 @@
     <div class="container">
         <div class="campo-pesquisa">
             <!-- <i class="fa-solid fa-location-dot"></i> -->
-            <button class="fa-solid fa-location-crosshairs btLocalizacao tooltip">
+            <button class="fa-solid fa-location-crosshairs btLocalizacao tooltip" onclick="getGeolocation();">
                 <span class="tooltipTextoUp">Localização atual
                     <i class="fa-solid fa-sort-up"></i>
                 </span>                
@@ -35,7 +35,7 @@
                     <i class="fa-solid fa-sort-up"></i>
                 </span>   
             </div>
-            <button class="fa-solid fa-magnifying-glass btPesquisa tooltip">
+            <button class="fa-solid fa-magnifying-glass btPesquisa tooltip" onclick="validaCidade();">
                 <span class="tooltipTextoUp">Pesquisar
                     <i class="fa-solid fa-sort-up"></i>
                 </span>                
@@ -61,8 +61,8 @@
                     <p class="temperatura"></p>
                 </div>
                 <div style="padding-left: 40px; font-weight: 600;">
-                    <p class="temperaturaMax" style="color: #c72d2d"></p>
-                    <p class="temperaturaMin" style="color: #5757d7"></p> 
+                    <p class="temperaturaMax temp-max"></p>
+                    <p class="temperaturaMin temp-min"></p> 
                 </div>
             </div>
             <p class="descricao"></p>
@@ -84,8 +84,16 @@
                     <p>Vento</p>
                 </div>
             </div>
-    </div>
+        </div>        
 
+        <hr>
+
+        <div class="clima-dias oculta-tela">
+            <p onclick="showProximosDias()">Próximos dias <i class="fa-solid fa-chevron-up"></i></p>
+            
+            <div class="clima-dias-container">                
+            </div>
+        </div>
     </div>
     <script src="https://kit.fontawesome.com/7c8801c017.js" crossorigin="anonymous"></script>
     <script src="js/index.js"></script>

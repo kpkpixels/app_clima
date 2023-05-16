@@ -3,6 +3,8 @@ const campoBuscaInput = document.querySelector(".campo-pesquisa input");
 const botaoBusca = document.querySelector(".btPesquisa");
 const climaBox = document.querySelector(".clima-box");
 const climaDetalhes = document.querySelector(".clima-detalhes");
+const climaDias = document.querySelector(".clima-dias");
+const climaDia = document.querySelectorAll(".clima-dia");
 const error404 = document.querySelector(".nao-encontrado");
 const autocompleteCidades = document.querySelector(".autocomplete-cidades");
 const carregando = document.querySelector(".carregando");
@@ -12,7 +14,7 @@ const botaoTema = document.querySelector(".btTema");
 
 listaClima = [
   {codigo: 0, descricao: "Céu limpo", img: "imagens/limpo.png"},
-  {codigo: 1, descricao: "Principalmente limpo", img: "imagens/limpo.png"},
+  {codigo: 1, descricao: "Céu limpo, poucas nuvens", img: "imagens/limpo.png"},
   {codigo: 2, descricao: "Parcialmente nublado", img: "imagens/nuvens.png"},
   {codigo: 3, descricao: "Nublado", img: "imagens/nublado.png"},
   {codigo: 45, descricao: "Nevoeiro", img: "imagens/nublado.png"},
@@ -43,15 +45,6 @@ listaClima = [
 
 
 //#region listeners
-botaoLocalizacao.addEventListener("click", () => {
-  getGeolocation();
-});
-botaoBusca.addEventListener("click", () => {
-  validaCidade();
-});
-botaoTema.addEventListener("click", () => {
-  mudaTema();
-});
 campoBuscaInput.addEventListener("keydown", function (e) {
   if (e.code == "Enter") {
     validaCidade();
@@ -83,7 +76,7 @@ function fetchAPI(info){
 
   mostraCarregando("Buscando informações, aguarde...");
 
-  var urlAPI = `https://api.open-meteo.com/v1/dwd-icon?latitude=${info[0]}&longitude=${info[0]}&hourly=relativehumidity_2m&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=auto`;
+  var urlAPI = `https://api.open-meteo.com/v1/dwd-icon?latitude=${info[0]}&longitude=${info[1]}&hourly=relativehumidity_2m&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=auto`;
   
   fetch(urlAPI)
     .then((result) => result.json())
@@ -103,6 +96,8 @@ function montaDados(dados) {
   montaImagens(dados.current_weather.weathercode);
 
   montaInformacoesTela(dados);
+
+  montaInfoProximosDias(dados.daily);
 }
 
 function matchMunicipio() {
@@ -110,6 +105,7 @@ function matchMunicipio() {
     i,
     val = campoBuscaInput.value;
 
+  climaDias.classList.add("oculta-tela");
   climaBox.classList.add("oculta-tela");
   climaDetalhes.classList.add("oculta-tela");
   error404.classList.add("oculta-tela");
@@ -177,13 +173,14 @@ function ocultaCarregando(){
   container.style.height = "105px"   
   carregando.style.display = "none";  
 }
-function naoEncontrada(){
+function naoEncontrada() {
   climaBox.classList.add("oculta-tela");
-          climaDetalhes.classList.add("oculta-tela");
-          container.style.height = "430px"
-          error404.classList.remove("oculta-tela");
-          error404.style.display = "block";
-          error404.classList.add("fadeIn");          
+  climaDetalhes.classList.add("oculta-tela");
+  climaDias.classList.add("oculta-tela");
+  container.style.height = "430px";
+  error404.classList.remove("oculta-tela");
+  error404.style.display = "block";
+  error404.classList.add("fadeIn");
 }
 
 function mudaTema(){
@@ -238,12 +235,56 @@ function montaInformacoesTela(info) {
 
   climaBox.classList.remove("oculta-tela");
   climaDetalhes.classList.remove("oculta-tela");
+  climaDias.classList.remove("oculta-tela");
 
   climaBox.style.display = "";
   climaDetalhes.style.display = "";
   climaBox.classList.add("fadeIn");
   climaDetalhes.classList.add("fadeIn");
-  container.style.height = "590px";
+  container.style.height = "655px";
+}
+
+function montaInfoProximosDias(info){
+  const climaDiasContainer = document.querySelector(".clima-dias-container");
+  let estrutura = "";
+
+  for (let i = 1; i < info.temperature_2m_max.length; i++) {
+    const data = info.time[i].split("-");
+
+    estrutura += `<div class="clima-dia oculta-tela">` + 
+    `<div class="dia">`+
+    `<span>`+data[2]+`/`+data[1]+`</span>`+
+    `</div>`+
+    `<div class="temperaturas-dia">`+
+    `<img src="imagens/limpo.png" alt="">`+
+    `<div>`+
+    `<span class="temp-max">${info.temperature_2m_max[i]} <i class="fas fa-arrow-up" aria-hidden="true"></i></span>`+
+    `<span class="temp-min">${info.temperature_2m_min[i]} <i class="fas fa-arrow-down" aria-hidden="true"></i></span>`+
+    `</div>`+
+    `</div>`+
+    `</div>`;
+  }
+
+  climaDiasContainer.innerHTML = estrutura;
+
+}
+
+function showProximosDias(){
+  const climaDia = document.querySelectorAll(".clima-dia");
+  const botaoProx = document.querySelector(".clima-dias p i");
+  climaDia.forEach(elemento => {
+    if (elemento.className.split(" ")[1] === "oculta-tela"){    
+      elemento.classList.remove("oculta-tela");
+      container.style.height = "1200px";
+      botaoProx.style = "transform: rotate(0deg)";
+    }
+    else{
+      elemento.classList.add("oculta-tela");
+      container.style.height = "655px";
+      botaoProx.style = "transform: rotate(180deg)";
+    }
+  });
+  
 }
 
 //pega a localizaçao do navegador
