@@ -83,7 +83,7 @@ body{
     display: flex;
     justify-content: space-around;
     font-weight: 600;
-    flex-direction: column;
+    flex-direction: column-reverse;
     color: var(--segunda-cor);
     /* background: var(--cor-fundo-darker);
     padding-left: 22px;
@@ -98,7 +98,7 @@ body{
     background: var(--cor-fundo-darker);
     border-radius: 12px;
     cursor: pointer;
-    margin-bottom: 5px;
+    margin-top: 5px;
 }
 .clima-dias p:hover{
     background: black;    
@@ -106,7 +106,7 @@ body{
 .clima-dias p i{
     margin: 4px;
     transition: 0.3s;
-    transform: rotate(180deg);
+    transform: rotate(0deg);
 }
 .clima-dias img{
     width: 35px;
@@ -133,6 +133,12 @@ body{
     display: grid;
     border-radius: 50%;
     font-size: 12px;
+}
+.clima-dias-container{
+    margin-top: 10px;
+    transform: scale(0);
+    transform-origin: bottom;
+    transition: 0.4s;
 }
 .temperaturas-dia{
     display: flex;

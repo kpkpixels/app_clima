@@ -4,6 +4,7 @@ const botaoBusca = document.querySelector(".btPesquisa");
 const climaBox = document.querySelector(".clima-box");
 const climaDetalhes = document.querySelector(".clima-detalhes");
 const climaDias = document.querySelector(".clima-dias");
+const climaDiasContainer = document.querySelector(".clima-dias-container");
 const climaDia = document.querySelectorAll(".clima-dia");
 const error404 = document.querySelector(".nao-encontrado");
 const autocompleteCidades = document.querySelector(".autocomplete-cidades");
@@ -11,6 +12,7 @@ const carregando = document.querySelector(".carregando");
 const botaoLocalizacao = document.querySelector(".btLocalizacao");
 const textoTooltipNomeCidade = document.querySelector(".tooltipNomeCidade");
 const botaoTema = document.querySelector(".btTema");
+const tamanhoPadraoContainer = 670;
 
 listaClima = [
   {codigo: 0, descricao: "Céu limpo", img: "imagens/limpo.png"},
@@ -240,11 +242,10 @@ function montaInformacoesTela(info) {
   climaDetalhes.style.display = "";
   climaBox.classList.add("fadeIn");
   climaDetalhes.classList.add("fadeIn");
-  container.style.height = "655px";
+  container.style.height = tamanhoPadraoContainer+"px";
 }
 
-async function montaInfoProximosDias(info){
-  const climaDiasContainer = document.querySelector(".clima-dias-container");
+async function montaInfoProximosDias(info){  
   let estrutura = "";
 
   for (let i = 1; i < info.temperature_2m_max.length; i++) {
@@ -281,13 +282,22 @@ function showProximosDias(){
   climaDia.forEach(elemento => {
     if (elemento.className.split(" ")[1] === "oculta-tela"){    
       elemento.classList.remove("oculta-tela");
-      container.style.height = "1200px";
-      botaoProx.style = "transform: rotate(0deg)";
+      container.style.height = "710px";
+      botaoProx.style = "transform: rotate(180deg)";
+      climaDiasContainer.style = "transform: scaleY(1)";
+      climaBox.classList.add("oculta-tela");
+      climaDetalhes.classList.add("oculta-tela");
     }
     else{
-      elemento.classList.add("oculta-tela");
-      container.style.height = "655px";
-      botaoProx.style = "transform: rotate(180deg)";
+      climaDiasContainer.style = "transform: scaleY(0)";
+      botaoProx.style = "transform: rotate(0deg)";
+      setTimeout(() => {     
+        climaBox.classList.remove("oculta-tela");
+        climaDetalhes.classList.remove("oculta-tela");   
+        elemento.classList.add("oculta-tela");
+        container.style.height = tamanhoPadraoContainer+"px";
+      }, 300);
+      
     }
   });
   
