@@ -1,6 +1,6 @@
 const container = document.querySelector(".container");
 const campoBuscaInput = document.querySelector(".campo-pesquisa input");
-const campoBusca = document.querySelector(".btPesquisa");
+const botaoBusca = document.querySelector(".btPesquisa");
 const climaBox = document.querySelector(".clima-box");
 const climaDetalhes = document.querySelector(".clima-detalhes");
 const error404 = document.querySelector(".nao-encontrado");
@@ -10,12 +10,47 @@ const botaoLocalizacao = document.querySelector(".btLocalizacao");
 const textoTooltipNomeCidade = document.querySelector(".tooltipNomeCidade");
 const botaoTema = document.querySelector(".btTema");
 
+listaClima = [
+  {codigo: 0, descricao: "Céu limpo", img: "imagens/limpo.png"},
+  {codigo: 1, descricao: "Principalmente limpo", img: "imagens/limpo.png"},
+  {codigo: 2, descricao: "Parcialmente nublado", img: "imagens/nuvens.png"},
+  {codigo: 3, descricao: "Nublado", img: "imagens/nublado.png"},
+  {codigo: 45, descricao: "Nevoeiro", img: "imagens/nublado.png"},
+  {codigo: 48, descricao: "Nevoeiro depositando rime", img: "imagens/nublado.png"},
+  {codigo: 51, descricao: "Chuvisco fraco", img: "imagens/chuvoso.png"},
+  {codigo: 53, descricao: "Chuvisco moderado", img: "imagens/chuvoso.png"},
+  {codigo: 55, descricao: "Chuvisco forte", img: "imagens/chuvoso.png"},
+  {codigo: 56, descricao: "Chuvisco gelado fraco", img: "imagens/chuvoso.png"},
+  {codigo: 57, descricao: "Chuvisco gelado forte", img: "imagens/chuvoso.png"},
+  {codigo: 61, descricao: "Chuva fraca", img: "imagens/chuvoso.png"},
+  {codigo: 63, descricao: "Chuva moderada", img: "imagens/chuvoso.png"},
+  {codigo: 65, descricao: "Chuva forte", img: "imagens/chuvoso.png"},
+  {codigo: 66, descricao: "Chuva gelada fraca", img: "imagens/chuvoso.png"},
+  {codigo: 67, descricao: "Chuva gelada forte", img: "imagens/chuvoso.png"},
+  {codigo: 71, descricao: "Neve fraca", img: "imagens/neve.png"},
+  {codigo: 73, descricao: "Neve moderada", img: "imagens/neve.png"},
+  {codigo: 75, descricao: "Neve forte", img: "imagens/neve.png"},
+  {codigo: 77, descricao: "Grãos de neve", img: "imagens/neve.png"},
+  {codigo: 80, descricao: "Chuva fraca com pancadas", img: "imagens/chuvoso.png"},
+  {codigo: 81, descricao: "Chuva moderada com pancadas", img: "imagens/chuvoso.png"},
+  {codigo: 82, descricao: "Chuva forte com pancadas", img: "imagens/chuvoso.png"},
+  {codigo: 85, descricao: "Neve fraca com pancadas", img: "imagens/neve.png"},
+  {codigo: 86, descricao: "Neve forte com pancadas", img: "imagens/neve.png"},
+  {codigo: 95, descricao: "Tempestade fraca ou moderada", img: "imagens/chuvoso.png"},
+  {codigo: 96, descricao: "Tempestade com chuva de granizo fraco", img: "imagens/chuvoso.png"},
+  {codigo: 99, descricao: "Tempestade com chuva de granizo forte", img: "imagens/chuvoso.png"},
+]
+
+
 //#region listeners
 botaoLocalizacao.addEventListener("click", () => {
   getGeolocation();
 });
-campoBusca.addEventListener("click", () => {
+botaoBusca.addEventListener("click", () => {
   validaCidade();
+});
+botaoTema.addEventListener("click", () => {
+  mudaTema();
 });
 campoBuscaInput.addEventListener("keydown", function (e) {
   if (e.code == "Enter") {
@@ -26,25 +61,20 @@ campoBuscaInput.addEventListener("keydown", function (e) {
 campoBuscaInput.addEventListener("input", function (e) {
     matchMunicipio();
 });
-botaoTema.addEventListener("click", () => {
-  mudaTema();
-});
 //#endregion
 
 async function validaCidade(){    
   campoBuscaInput.focus();
   ajustaTamanhoTexto();
-
+  
+  
   let cidade = document.querySelector(".campo-pesquisa input").value.split(",")[0];
-  //let cidade = document.querySelector(".campo-pesquisa input").value.split(",")[0].normalize('NFD').replace(/[\u0300-\u036f]/g, ''); //tira acentos e deixa minusculo
-  //cidade = cidade.replace(/[\W_]+/g, " "); 
   
   if (cidade === "") {
     return;
   }
   else{
-    //buscaDados(cidade);
-    fetchAPI(await getLatLongByEndereço(cidade));
+    fetchAPI(await getLatLongByEndereco(cidade));
   }
 }
 
@@ -64,8 +94,6 @@ function fetchAPI(info){
 }
 
 function montaDados(dados) {
-  mostraCarregando("Buscando informações, aguarde...");
-
   ocultaCarregando();
   textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
 
@@ -86,6 +114,8 @@ function matchMunicipio() {
   climaDetalhes.classList.add("oculta-tela");
   error404.classList.add("oculta-tela");
   autocompleteCidades.classList.remove("oculta-tela");
+
+  textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
 
   limparListaCidades();
   if (!val) {
@@ -175,93 +205,24 @@ function mudaTema(){
 
 function montaImagens(codigoClima){
   const image = document.querySelector(".clima-box img");
+  const descricao = document.querySelector(".clima-box .descricao");
+       
+  listaClima.forEach(clima => {
+    if (clima.codigo == codigoClima){
+      descricao.innerHTML = `${clima.descricao}`;
+      image.src = clima.img;
+    }
+  });
 
-      //easter egg
-      if (campoBuscaInput.value.split(",")[0] === "abu dhabi") { image.src = "imagens/abudhabi.png"; }
-      
-      switch (codigoClima) {
-        case 0: {
-          image.src = "imagens/limpo.png";
-          break;
-        }
-        case 1: {
-          image.src = "imagens/limpo.png";
-          break;
-        }
-        case 2: {
-          image.src = "imagens/nuvens.png";
-          break;
-        }
-        case 3: {
-          image.src = "imagens/nuvens.png";
-          break;
-        }
-        case 45: {
-          image.src = "imagens/nublado.png";
-          break;
-        }
-        case 48: {
-          image.src = "imagens/nublado.png";
-          break;
-        }
-        case 53: {
-          image.src = "imagens/chuvoso.png";
-          break;
-        }
-        case 55: {
-          image.src = "imagens/chuvoso.png";
-          break;
-        }
-        case 51: {
-          image.src = "imagens/chuvoso.png";
-          break;
-        }
-        case 61: {
-          image.src = "imagens/chuvoso.png";
-          break;
-        }
-        case 63: {
-          image.src = "imagens/chuvoso.png";
-          break;
-        }
-        case 65: {
-          image.src = "imagens/chuvoso.png";
-          break;
-        }
-        case 66: {
-          image.src = "imagens/chuvoso.png";
-          break;
-        }
-        case 67: {
-          image.src = "imagens/chuvoso.png";
-          break;
-        }
-        case 71: {
-          image.src = "imagens/neve.png";
-          break;
-        }
-        case 73: {
-          image.src = "imagens/neve.png";
-          break;
-        }
-        case 75: {
-          image.src = "imagens/neve.png";
-          break;
-        }
-        case 77: {
-          image.src = "imagens/neve.png";
-          break;
-        }        
-        default:
-          image.src = "";
-      }
+   //easter egg
+   if (campoBuscaInput.value.split(",")[0] === "Abu Dhabi") { image.src = "imagens/abudhabi.png"; }
+    
 }
 
 function montaInformacoesTela(info) {
   const temperatura = document.querySelector(".clima-box .temperatura");
   const temperaturaMax = document.querySelector(".clima-box .temperaturaMax");
   const temperaturaMin = document.querySelector(".clima-box .temperaturaMin");
-  const descricao = document.querySelector(".clima-box .descricao");
   const umidade = document.querySelector(".clima-detalhes .umidade span");
   const vento = document.querySelector(".clima-detalhes .vento span");
 
@@ -272,11 +233,8 @@ function montaInformacoesTela(info) {
   temperaturaMin.innerHTML = `${parseInt(
     info.daily.temperature_2m_min[0]
   )}°C  <i class="fas fa-arrow-down"></i>`;
-  // descricao.innerHTML = `${info.weather[0].description}`;
-  umidade.innerHTML = `99%`;
+  umidade.innerHTML = getUmidade(info.hourly) + "%";
   vento.innerHTML = `${parseFloat(info.current_weather.windspeed)} Km/h`;
-
-  //getLocalizacaoByLatLong(info.coord.lat, info.coord.lon);
 
   climaBox.classList.remove("oculta-tela");
   climaDetalhes.classList.remove("oculta-tela");
@@ -300,9 +258,10 @@ function getGeolocation() {
 function getLocalizacao(posicao){ 
   mostraCarregando("Buscando localização, aguarde...");
   fetchAPI([posicao.coords.latitude, posicao.coords.longitude]);
+  getLocalizacaoByLatLong([posicao.coords.latitude, posicao.coords.longitude]);
 }
 
-function getLatLongByEndereço(cidade){
+function getLatLongByEndereco(cidade){
   return new Promise((resolve, reject) => {
     fetch(`https://geocode.maps.co/search?q={${cidade}}`)
       .then(res => res.json())
@@ -358,6 +317,22 @@ function setaTemaByHour(){
   else{
     mudaTema();
   }
+}
+
+function getUmidade(listaUmidade){
+  for (let i = 0; i < listaUmidade.time.length; i++) {
+    const umidade = listaUmidade.time[i];
+
+    let dataUmidade = new Date(umidade);
+    let diaIgual = dataUmidade.getDay() == new Date().getDay() ? true : false;
+    let horaIgual = dataUmidade.getHours() == new Date().getHours() ? true : false;
+
+    if (diaIgual && horaIgual){
+      return listaUmidade.relativehumidity_2m[i];
+    }
+  }
+
+  return "";
 }
 
 //carregou a pagina, ele chama essa funçao
