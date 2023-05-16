@@ -42,7 +42,7 @@ listaClima = [
   {codigo: 96, descricao: "Tempestade com chuva de granizo fraco", img: "imagens/chuvoso.png"},
   {codigo: 99, descricao: "Tempestade com chuva de granizo forte", img: "imagens/chuvoso.png"},
 ]
-
+diaSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
 //#region listeners
 campoBuscaInput.addEventListener("keydown", function (e) {
@@ -86,15 +86,17 @@ function fetchAPI(info){
     });
 }
 
-function montaDados(dados) {
+async function montaDados(dados) {
   ocultaCarregando();
   textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
 
   error404.style.display = "none";
   error404.classList.remove("fadeIn");
 
-  montaImagens(dados.current_weather.weathercode);
-
+  let infoDescricaoImg = await getDescricaoImagem(dados.current_weather.weathercode);
+  document.querySelector(".clima-box img").src = infoDescricaoImg[1];
+  document.querySelector(".clima-box .descricao").innerHTML = infoDescricaoImg[0];
+       
   montaInformacoesTela(dados);
 
   montaInfoProximosDias(dados.daily);
@@ -200,20 +202,17 @@ function mudaTema(){
   }
 }
 
-function montaImagens(codigoClima){
-  const image = document.querySelector(".clima-box img");
-  const descricao = document.querySelector(".clima-box .descricao");
-       
-  listaClima.forEach(clima => {
-    if (clima.codigo == codigoClima){
-      descricao.innerHTML = `${clima.descricao}`;
-      image.src = clima.img;
-    }
-  });
+function getDescricaoImagem(codigoClima){  
+  return new Promise((resolve, reject) => {
+    listaClima.forEach(clima => {
+      if (clima.codigo == codigoClima){                
+       if (campoBuscaInput.value.split(",")[0] === "Abu Dhabi") { resolve([clima.descricao, "imagens/abudhabi.png"]); }//easter egg
 
-   //easter egg
-   if (campoBuscaInput.value.split(",")[0] === "Abu Dhabi") { image.src = "imagens/abudhabi.png"; }
-    
+        resolve([clima.descricao, clima.img]);
+      }
+    })
+      .catch(error => reject(error));
+  });         
 }
 
 function montaInformacoesTela(info) {
@@ -244,19 +243,26 @@ function montaInformacoesTela(info) {
   container.style.height = "655px";
 }
 
-function montaInfoProximosDias(info){
+async function montaInfoProximosDias(info){
   const climaDiasContainer = document.querySelector(".clima-dias-container");
   let estrutura = "";
 
   for (let i = 1; i < info.temperature_2m_max.length; i++) {
     const data = info.time[i].split("-");
+    let infoDescricaoImg = await getDescricaoImagem(info.weathercode[i]);
+    const diaDeHoje = new Date().getDay();
+    let dia = diaDeHoje + i > 6 ? (diaDeHoje + i) - 7 : diaDeHoje + i;
 
     estrutura += `<div class="clima-dia oculta-tela">` + 
     `<div class="dia">`+
     `<span>`+data[2]+`/`+data[1]+`</span>`+
+    `<span>${diaSemana[dia]}</span>`+
+    `</div>`+
+    `<div style="max-width: 40%; text-align: center;">`+
+    `<span>${infoDescricaoImg[0]}</span>`+
     `</div>`+
     `<div class="temperaturas-dia">`+
-    `<img src="imagens/limpo.png" alt="">`+
+    `<img src=${infoDescricaoImg[1]} alt="">`+
     `<div>`+
     `<span class="temp-max">${info.temperature_2m_max[i]} <i class="fas fa-arrow-up" aria-hidden="true"></i></span>`+
     `<span class="temp-min">${info.temperature_2m_min[i]} <i class="fas fa-arrow-down" aria-hidden="true"></i></span>`+

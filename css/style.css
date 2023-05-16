@@ -32,19 +32,19 @@ body.tema-escuro{
     box-sizing: border-box;
 }
 body{
-    height: 130vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background:var(--primeira-cor);
-    margin-left: 4vh;
-    margin-right: 4vh;
+    margin: 0 4vw;
     transition: 0.6s ease-out;
 }
 
 .container{
     position: relative;
-    width: 400px;
+    width: 93vw;
+    max-width: 410px;
     height: 105px; 
     background: var(--cor-fundo);
     padding: 28px 32px;
@@ -132,6 +132,7 @@ body{
     align-content: center;
     display: grid;
     border-radius: 50%;
+    font-size: 12px;
 }
 .temperaturas-dia{
     display: flex;
@@ -395,7 +396,7 @@ button:hover{
         display: block;
     }
     .clima-detalhes .umidade, .clima-detalhes .vento{
-        padding-left: 0px;
+        padding: 0 0;
         justify-content: space-between;
         height: 80px;
     }
@@ -408,7 +409,7 @@ button:hover{
 }
 @media only screen and (max-height: 760px) {
     .container{
-        scale: 0.8;
+        /* scale: 0.8; */
     }
 }
 
