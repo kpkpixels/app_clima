@@ -265,8 +265,8 @@ async function montaInfoProximosDias(info){
     `<div class="temperaturas-dia">`+
     `<img src=${infoDescricaoImg[1]} alt="">`+
     `<div>`+
-    `<span class="temp-max">${info.temperature_2m_max[i]} <i class="fas fa-arrow-up" aria-hidden="true"></i></span>`+
-    `<span class="temp-min">${info.temperature_2m_min[i]} <i class="fas fa-arrow-down" aria-hidden="true"></i></span>`+
+    `<span class="temp-max">${info.temperature_2m_max[i]} °C<i class="fas fa-arrow-up" aria-hidden="true"></i></span>`+
+    `<span class="temp-min">${info.temperature_2m_min[i]} °C<i class="fas fa-arrow-down" aria-hidden="true"></i></span>`+
     `</div>`+
     `</div>`+
     `</div>`;

@@ -395,6 +395,11 @@ button:hover{
     .campo-pesquisa input::placeholder{
         font-size: 17px;
     }
+    .clima-dia{
+        font-size: 13px;
+        padding: 10px;
+        flex-wrap: nowrap !important;
+    }
 }
 
 @media only screen and (max-width: 340px) {
@@ -414,8 +419,8 @@ button:hover{
     }
 }
 @media only screen and (max-height: 760px) {
-    .container{
-        /* scale: 0.8; */
-    }
+    /* .container{
+        scale: 0.8;
+    } */
 }
 
