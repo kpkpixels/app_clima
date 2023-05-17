@@ -7,6 +7,12 @@
     --terceira-cor: #455D85;
     --cor-icones: #000;
     --cor-fundo: #fff;
+    --cor-fundo-darker:#94bec3;
+    --cor-fundo-more-darker:#516769;
+    --cor-temperatura-min: #418F9C;
+    --cor-temperatura-max: #c72d2d;
+
+    --transicaoPadrao: 0.6s cubic-bezier(0.61, 0.11, 0.07, 1.12);
 }
 body.tema-escuro{
     --primeira-cor: #3f3e84;
@@ -16,6 +22,10 @@ body.tema-escuro{
     --terceira-cor: #c8c8c8;
     --cor-icones: #fff;
     --cor-fundo: #403d4d;
+    --cor-fundo-darker:#2d2b36;
+    --cor-fundo-more-darker:#000000;
+    --cor-temperatura-min: #418F9C;
+    --cor-temperatura-max: #c72d2d;
 }
 
 *{
@@ -31,21 +41,21 @@ body{
     align-items: center;
     justify-content: center;
     background:var(--primeira-cor);
-    margin-left: 4vh;
-    margin-right: 4vh;
-    transition: 0.6s ease-out;
+    margin: 0 4vw;
+    transition: var(--transicaoPadrao);
 }
 
 .container{
     position: relative;
-    width: 400px;
-    height: 105px;
+    width: 93vw;
+    max-width: 410px;
+    height: 105px; 
     background: var(--cor-fundo);
     padding: 28px 32px;
     overflow: hidden;
     border-radius: 18px;
     font-family: "Roboto", sans-serif;
-    transition: 0.6s ease-out;
+    transition: var(--transicaoPadrao);
     box-shadow: 2px 2px 5px 0px black;
 }
 
@@ -73,6 +83,88 @@ body{
     font-weight: 500;
     text-transform: capitalize;
 }
+.clima-dias{
+    display: flex;
+    justify-content: space-around;
+    font-weight: 600;
+    flex-direction: column-reverse;
+    color: var(--segunda-cor);
+    /* background: var(--cor-fundo-darker);
+    padding-left: 22px;
+    border-radius: 7%;
+    padding-right: 22px; */
+}
+.clima-dias p{
+    transition: 0.3s;
+    padding: 10px;
+    text-align: start;
+    width: fit-content;
+    background: var(--cor-fundo-darker);
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+.clima-dias p:hover{
+    background: var(--cor-fundo-more-darker);    
+}
+.clima-dias p i{
+    margin: 4px;
+    transition: 0.3s;
+    transform: rotate(0deg);
+}
+.clima-dias img{
+    width: 35px;
+}
+.clima-dia{
+    margin-top: 3px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    background: var(--cor-fundo-darker);
+    padding: 14px;
+    border-radius: 18px;    
+    transition: var(--transicaoPadrao);
+}
+.clima-dia .dia{
+    background: var(--cor-fundo);
+    width: 60px;
+    text-align: center;
+    height: 60px;
+    align-content: center;
+    display: grid;
+    border-radius: 50%;
+    font-size: 12px;
+    transition: var(--transicaoPadrao);
+}
+.clima-dias-container{
+    margin-top: 10px;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: 0.4s cubic-bezier(0.61, 0.11, 0.07, 1.12);
+}
+.temperaturas-dia{
+    display: flex;
+    align-items: center;
+}
+.temperaturas-dia span{
+    display: flex;
+    margin-left: 15px;
+    justify-content: flex-end;
+}
+.temperaturas-dia span i{
+    margin-left: 5px;
+}
+.temp-max{
+    color: var(--cor-temperatura-max);
+}
+.temp-min{
+    color: var(--cor-temperatura-min);
+}
+
 button{
     display: inline-flex !important;
     justify-content: center;
@@ -84,7 +176,7 @@ button{
     background: var(--primeira-cor-light);
     font-size: 22px;
     border-radius: 50%;
-    transition: 0.4s;
+    transition: var(--transicaoPadrao);
     color: var(--cor-icones);
 }
 button:hover{
@@ -181,7 +273,7 @@ button:hover{
     flex-wrap: nowrap;
     justify-content: space-evenly;
     margin-top: 10px;
-    transition: 1s linear;
+    transition: var(--transicaoPadrao);
 }
 .autocomplete-cidades span{
     font-size: 20px;
@@ -240,7 +332,7 @@ button:hover{
 }
 .fadeIn {
     animation: 0.5s fadeIn forwards;
-    animation-delay: 0.5s;
+    /* animation-delay: 0.5s; */
 }
 
 .tooltip span {
@@ -303,11 +395,19 @@ button:hover{
 }
 
 @media only screen and (max-width: 500px) {
+    body{
+        height: 115vh;
+    }
     .campo-pesquisa input{
         font-size: 17px !important;
     }
     .campo-pesquisa input::placeholder{
         font-size: 17px;
+    }
+    .clima-dia{
+        font-size: 13px;
+        padding: 10px;
+        flex-wrap: nowrap !important;
     }
 }
 
@@ -316,7 +416,7 @@ button:hover{
         display: block;
     }
     .clima-detalhes .umidade, .clima-detalhes .vento{
-        padding-left: 0px;
+        padding: 0 0;
         justify-content: space-between;
         height: 80px;
     }
@@ -328,8 +428,8 @@ button:hover{
     }
 }
 @media only screen and (max-height: 760px) {
-    .container{
+    /* .container{
         scale: 0.8;
-    }
+    } */
 }
 
