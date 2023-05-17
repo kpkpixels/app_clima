@@ -92,6 +92,7 @@ async function montaDados(dados) {
   ocultaCarregando();
   textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
 
+  climaDiasContainer.style = "transform: scaleY(0)";
   error404.style.display = "none";
   error404.classList.remove("fadeIn");
 
@@ -108,7 +109,7 @@ function matchMunicipio() {
     var b,
     i,
     val = campoBuscaInput.value;
-
+  
   climaDias.classList.add("oculta-tela");
   climaBox.classList.add("oculta-tela");
   climaDetalhes.classList.add("oculta-tela");
