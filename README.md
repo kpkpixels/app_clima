@@ -7,7 +7,7 @@ Este website permite que os usuários consultem informações sobre o clima de u
 ## Funcionalidades:
 * Consulta manualmente ao clima por cidade ou automaticamente, puxando a localização do navegador.
 * Exibição de informações como temperatura, umidade, velocidade do vento, etc.
-* É possível visualizar os próximos 6 dias.
+* É possível visualizar até 7 dias.
 
 ## API utilizada
 Open-Meteo -> https://open-meteo.com/en/docs
