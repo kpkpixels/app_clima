@@ -14,13 +14,15 @@ const textoTooltipNomeCidade = document.querySelector(".tooltipNomeCidade");
 const botaoTema = document.querySelector(".btTema");
 const tamanhoPadraoContainer = 670;
 
+let permitidaGeolocacao = false;
+
 listaClima = [
   {codigo: 0, descricao: "Céu limpo", img: "imagens/limpo.png"},
   {codigo: 1, descricao: "Céu limpo, poucas nuvens", img: "imagens/limpo.png"},
   {codigo: 2, descricao: "Parcialmente nublado", img: "imagens/nuvens.png"},
   {codigo: 3, descricao: "Nublado", img: "imagens/nublado.png"},
-  {codigo: 45, descricao: "Nevoeiro", img: "imagens/nublado.png"},
-  {codigo: 48, descricao: "Nevoeiro depositando rime", img: "imagens/nublado.png"},
+  {codigo: 45, descricao: "Neblina", img: "imagens/nublado.png"},
+  {codigo: 48, descricao: "Neblina com geada", img: "imagens/nublado.png"},
   {codigo: 51, descricao: "Chuvisco fraco", img: "imagens/chuvoso.png"},
   {codigo: 53, descricao: "Chuvisco moderado", img: "imagens/chuvoso.png"},
   {codigo: 55, descricao: "Chuvisco forte", img: "imagens/chuvoso.png"},
@@ -48,17 +50,24 @@ diaSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sába
 
 //#region listeners
 campoBuscaInput.addEventListener("keydown", function (e) {
-  if (e.code == "Enter") {
+  if (e.code == "Enter") {    
     validaCidade();
   }
   ajustaTamanhoTexto();
 });
 campoBuscaInput.addEventListener("input", function (e) {
-    matchMunicipio();
+  if (navigator.userAgentData.mobile){container.style = "transform: translateY(-17vh)";}
+  
+  matchMunicipio();
+});
+campoBuscaInput.addEventListener("click", function(e) {  
+  window.scrollTo(0, screen.height);
 });
 //#endregion
 
-async function validaCidade(){    
+async function validaCidade(){   
+  if (navigator.userAgentData.mobile){container.style = "transform: translateY(0)";}
+  scrollCentro();
   campoBuscaInput.focus();
   ajustaTamanhoTexto();
   
@@ -393,9 +402,28 @@ function getUmidade(listaUmidade){
   return "";
 }
 
+function scrollCentro(){  
+  var windowHeight = window.innerHeight;
+  var contentHeight = document.body.offsetHeight;
+  var scrollPosition = contentHeight / 2 - windowHeight / 2;
+  window.scrollTo(0, scrollPosition);
+}
+
+navigator.geolocation.watchPosition(function() {
+  if (!permitidaGeolocacao){
+    permitidaGeolocacao = true;
+    mostraCarregando("Buscando localização, aguarde...");
+  }  
+},
+function(error) {
+  if (error.code == error.PERMISSION_DENIED)
+    ocultaCarregando();
+});
+
 //carregou a pagina, ele chama essa funçao
 window.onload = function() {
   campoBuscaInput.focus();
   getGeolocation();
-  setaTemaByHour();
+  setaTemaByHour();  
+  scrollCentro();
 };
