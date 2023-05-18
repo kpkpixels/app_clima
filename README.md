@@ -9,6 +9,9 @@ Este website permite que os usuários consultem informações sobre o clima de u
 * Exibição de informações como temperatura, umidade, velocidade do vento, etc.
 * É possível visualizar até 7 dias.
 
+## Acesso
+GitHub Pages -> https://kpkpixels.github.io/app_clima/
+
 ## API utilizada
 Open-Meteo -> https://open-meteo.com/en/docs
 
