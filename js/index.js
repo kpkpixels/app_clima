@@ -56,12 +56,12 @@ campoBuscaInput.addEventListener("keydown", function (e) {
   ajustaTamanhoTexto();
 });
 campoBuscaInput.addEventListener("input", function (e) {
-  if (navigator.userAgentData.mobile){container.classList.add("moveToTop");}
+  if (navigator.userAgentData.mobile){scrollToInput();}
   
   matchMunicipio();
 });
 campoBuscaInput.addEventListener("click", function(e) { 
-  window.scrollTo(0, document.body.offsetHeight * 0.07);
+  scrollToInput();
 });
 //#endregion
 
@@ -71,7 +71,6 @@ async function validaCidade(){
   ajustaTamanhoTexto();
 
   if (navigator.userAgentData.mobile){
-    container.classList.remove("moveToTop");
     campoBuscaInput.blur();
   }  
   
@@ -409,6 +408,13 @@ function scrollCentro(){
   var windowHeight = window.innerHeight;
   var contentHeight = document.body.offsetHeight;
   var scrollPosition = contentHeight / 2 - windowHeight / 2;
+  window.scrollTo(0, scrollPosition);
+}
+
+function scrollToInput(){
+  var windowHeight = document.body.offsetHeight;
+  var contentHeight = container.offsetHeight;
+  var scrollPosition = windowHeight - contentHeight;
   window.scrollTo(0, scrollPosition);
 }
 
