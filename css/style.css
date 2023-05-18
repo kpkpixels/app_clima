@@ -387,6 +387,10 @@ button:hover{
     transform: rotate(90deg);
 }
 
+.moveToTop{
+    transform: translateY(-17vh);
+}
+
 @keyframes fadeIn {
     to{
         scale: 1;

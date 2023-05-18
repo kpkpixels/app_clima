@@ -56,21 +56,24 @@ campoBuscaInput.addEventListener("keydown", function (e) {
   ajustaTamanhoTexto();
 });
 campoBuscaInput.addEventListener("input", function (e) {
-  if (navigator.userAgentData.mobile){container.style = "transform: translateY(-17vh)";}
+  if (navigator.userAgentData.mobile){container.classList.add("moveToTop");}
   
   matchMunicipio();
 });
-campoBuscaInput.addEventListener("click", function(e) {  
-  window.scrollTo(0, screen.height);
+campoBuscaInput.addEventListener("click", function(e) { 
+  window.scrollTo(0, document.body.offsetHeight * 0.07);
 });
 //#endregion
 
 async function validaCidade(){   
-  if (navigator.userAgentData.mobile){container.style = "transform: translateY(0)";}
   scrollCentro();
   campoBuscaInput.focus();
   ajustaTamanhoTexto();
-  
+
+  if (navigator.userAgentData.mobile){
+    container.classList.remove("moveToTop");
+    campoBuscaInput.blur();
+  }  
   
   let cidade = document.querySelector(".campo-pesquisa input").value.split(",")[0];
   
