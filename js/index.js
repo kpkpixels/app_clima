@@ -16,37 +16,6 @@ const tamanhoPadraoContainer = 670;
 
 let permitidaGeolocacao = false;
 
-listaClima = [
-  {codigo: 0, descricao: "Céu limpo", img: "imagens/limpo.png"},
-  {codigo: 1, descricao: "Céu limpo, poucas nuvens", img: "imagens/limpo.png"},
-  {codigo: 2, descricao: "Parcialmente nublado", img: "imagens/nuvens.png"},
-  {codigo: 3, descricao: "Nublado", img: "imagens/nublado.png"},
-  {codigo: 45, descricao: "Neblina", img: "imagens/nublado.png"},
-  {codigo: 48, descricao: "Neblina com geada", img: "imagens/nublado.png"},
-  {codigo: 51, descricao: "Chuvisco fraco", img: "imagens/chuvoso.png"},
-  {codigo: 53, descricao: "Chuvisco moderado", img: "imagens/chuvoso.png"},
-  {codigo: 55, descricao: "Chuvisco forte", img: "imagens/chuvoso.png"},
-  {codigo: 56, descricao: "Chuvisco gelado fraco", img: "imagens/chuvoso.png"},
-  {codigo: 57, descricao: "Chuvisco gelado forte", img: "imagens/chuvoso.png"},
-  {codigo: 61, descricao: "Chuva fraca", img: "imagens/chuvoso.png"},
-  {codigo: 63, descricao: "Chuva moderada", img: "imagens/chuvoso.png"},
-  {codigo: 65, descricao: "Chuva forte", img: "imagens/chuvoso.png"},
-  {codigo: 66, descricao: "Chuva gelada fraca", img: "imagens/chuvoso.png"},
-  {codigo: 67, descricao: "Chuva gelada forte", img: "imagens/chuvoso.png"},
-  {codigo: 71, descricao: "Neve fraca", img: "imagens/neve.png"},
-  {codigo: 73, descricao: "Neve moderada", img: "imagens/neve.png"},
-  {codigo: 75, descricao: "Neve forte", img: "imagens/neve.png"},
-  {codigo: 77, descricao: "Grãos de neve", img: "imagens/neve.png"},
-  {codigo: 80, descricao: "Chuva fraca com pancadas", img: "imagens/chuvoso.png"},
-  {codigo: 81, descricao: "Chuva moderada com pancadas", img: "imagens/chuvoso.png"},
-  {codigo: 82, descricao: "Chuva forte com pancadas", img: "imagens/chuvoso.png"},
-  {codigo: 85, descricao: "Neve fraca com pancadas", img: "imagens/neve.png"},
-  {codigo: 86, descricao: "Neve forte com pancadas", img: "imagens/neve.png"},
-  {codigo: 95, descricao: "Tempestade fraca ou moderada", img: "imagens/chuvoso.png"},
-  {codigo: 96, descricao: "Tempestade com chuva de granizo fraco", img: "imagens/chuvoso.png"},
-  {codigo: 99, descricao: "Tempestade com chuva de granizo forte", img: "imagens/chuvoso.png"},
-]
-diaSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
 //#region listeners
 campoBuscaInput.addEventListener("keydown", function (e) {
@@ -61,7 +30,7 @@ campoBuscaInput.addEventListener("input", function (e) {
   matchMunicipio();
 });
 campoBuscaInput.addEventListener("click", function(e) { 
-  scrollToInput();
+  if (navigator.userAgentData.mobile){scrollToInput();}
 });
 //#endregion
 
@@ -116,7 +85,7 @@ async function montaDados(dados) {
   montaInfoProximosDias(dados.daily);
 }
 
-function matchMunicipio() {
+async function matchMunicipio() {
     var b,
     i,
     val = campoBuscaInput.value;
@@ -128,6 +97,7 @@ function matchMunicipio() {
   autocompleteCidades.classList.remove("oculta-tela");
 
   textoTooltipNomeCidade.innerHTML = campoBuscaInput.value + '<i class="fa-solid fa-sort-up"></i>';
+  ajustaTamanhoTexto();
 
   limparListaCidades();
   if (!val) {
@@ -136,14 +106,16 @@ function matchMunicipio() {
   let cont = 0;
   let valorInput = val.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); //retirando acentos e deixando uppercase
 
-  for (i = 0; i < cidades.nomeCidades.length && cont < 5; i++) {
-    let nomeCidade = cidades.nomeCidades[i].slice(0, val.length).toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); //retirando acentos e deixando uppercase
+  const {listaCidades} = await getDados();
+
+  for (i = 0; i < listaCidades.length && cont < 5; i++) {
+    let nomeCidade = listaCidades[i].slice(0, val.length).toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); //retirando acentos e deixando uppercase
     if (nomeCidade == valorInput) {
       b = document.createElement("SPAN");
       b.setAttribute("class", "autocomplete-itens");
-      b.innerHTML = "<strong>" + cidades.nomeCidades[i].slice(0, val.length) + "</strong>";
-      b.innerHTML += cidades.nomeCidades[i].slice(val.length);
-      b.innerHTML += "<input type='hidden' value='" + cidades.nomeCidades[i] + "'>";
+      b.innerHTML = "<strong>" + listaCidades[i].slice(0, val.length) + "</strong>";
+      b.innerHTML += listaCidades[i].slice(val.length);
+      b.innerHTML += "<input type='hidden' value='" + listaCidades[i] + "'>";
       container.style.height = "calc("+container.style.height+" + 55px)";
 
       b.addEventListener("click", function (e) {
@@ -156,6 +128,17 @@ function matchMunicipio() {
       cont++;
     }
   }
+}
+
+async function getDados(){  
+  return new Promise((resolve, reject) => {
+    fetch('dados/data.json')
+      .then(response => response.json())
+      .then(data => {    
+        resolve(data);
+      })
+      .catch(error => reject(error));
+  });   
 }
 
 function getMunicipios() {
@@ -216,19 +199,21 @@ function mudaTema(){
   }
 }
 
-function getDescricaoImagem(codigoClima){  
+async function getDescricaoImagem(codigoClima) {
+  const { listaClima } = await getDados();
+
   return new Promise((resolve, reject) => {
-    listaClima.forEach(clima => {
-      if (clima.codigo == codigoClima){                
-       if (campoBuscaInput.value.split(",")[0] === "Abu Dhabi") { resolve([clima.descricao, "imagens/abudhabi.png"]); }//easter egg
-
-        resolve([clima.descricao, clima.img]);
+    const clima = listaClima.find((clima) => clima.codigo == codigoClima);
+    if (clima) {
+      if (campoBuscaInput.value.split(",")[0] === "Abu Dhabi") {
+        resolve([clima.descricao, "imagens/abudhabi.png"]); // easter egg
       }
-    })
-      .catch(error => reject(error));
-  });         
+      resolve([clima.descricao, clima.img]);
+    } else {
+      reject(new Error("Clima not found."));
+    }
+  });
 }
-
 function montaInformacoesTela(info) {
   const temperatura = document.querySelector(".clima-box .temperatura");
   const temperaturaMax = document.querySelector(".clima-box .temperaturaMax");
@@ -259,6 +244,7 @@ function montaInformacoesTela(info) {
 
 async function montaInfoProximosDias(info){  
   let estrutura = "";
+  const {diaSemana} = await getDados();
 
   for (let i = 1; i < info.temperature_2m_max.length; i++) {
     const data = info.time[i].split("-");
@@ -415,16 +401,20 @@ function scrollToInput(){
   campoBuscaInput.scrollIntoView({ behavior: 'smooth' });
 }
 
-navigator.geolocation.watchPosition(function() {
-  if (!permitidaGeolocacao){
-    permitidaGeolocacao = true;
-    mostraCarregando("Buscando localização, aguarde...");
-  }  
-},
-function(error) {
-  if (error.code == error.PERMISSION_DENIED)
-    ocultaCarregando();
+//comentando pq atrapalha quando vai buscar por localizaçao automatica após ja ter pesquisado
+/*
+document.addEventListener("DOMContentLoaded", function() {
+  navigator.geolocation.watchPosition(function() {
+    if (!permitidaGeolocacao) {
+      permitidaGeolocacao = true;
+      mostraCarregando("Buscando localização, aguarde...");
+    }
+  }, function(error) {
+    if (error.code == error.PERMISSION_DENIED)
+      ocultaCarregando();
+  });
 });
+*/
 
 //carregou a pagina, ele chama essa funçao
 window.onload = function() {

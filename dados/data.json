@@ -1,5 +1,5 @@
-var cidades = {
-  nomeCidades: [
+{
+  "listaCidades": [
     "Abadia de Goiás, GO",
     "Abadia dos Dourados, MG",
     "Abadiânia, GO",
@@ -5569,6 +5569,40 @@ var cidades = {
     "Zabelê, PB",
     "Zacarias, SP",
     "Zé Doca, MA",
-    "Zortéa, SC",
+    "Zortéa, SC"
   ],
-};
+
+  "listaClima" : [
+    {"codigo": 0, "descricao": "Céu limpo", "img": "imagens/limpo.png"},
+    {"codigo": 1, "descricao": "Céu limpo, poucas nuvens", "img": "imagens/limpo.png"},
+    {"codigo": 2, "descricao": "Parcialmente nublado", "img": "imagens/nuvens.png"},
+    {"codigo": 3, "descricao": "Nublado", "img": "imagens/nublado.png"},
+    {"codigo": 45, "descricao": "Neblina", "img": "imagens/nublado.png"},
+    {"codigo": 48, "descricao": "Neblina com geada", "img": "imagens/nublado.png"},
+    {"codigo": 51, "descricao": "Chuvisco fraco", "img": "imagens/chuvoso.png"},
+    {"codigo": 53, "descricao": "Chuvisco moderado", "img": "imagens/chuvoso.png"},
+    {"codigo": 55, "descricao": "Chuvisco forte", "img": "imagens/chuvoso.png"},
+    {"codigo": 56, "descricao": "Chuvisco gelado fraco", "img": "imagens/chuvoso.png"},
+    {"codigo": 57, "descricao": "Chuvisco gelado forte", "img": "imagens/chuvoso.png"},
+    {"codigo": 61, "descricao": "Chuva fraca", "img": "imagens/chuvoso.png"},
+    {"codigo": 63, "descricao": "Chuva moderada", "img": "imagens/chuvoso.png"},
+    {"codigo": 65, "descricao": "Chuva forte", "img": "imagens/chuvoso.png"},
+    {"codigo": 66, "descricao": "Chuva gelada fraca", "img": "imagens/chuvoso.png"},
+    {"codigo": 67, "descricao": "Chuva gelada forte", "img": "imagens/chuvoso.png"},
+    {"codigo": 71, "descricao": "Neve fraca", "img": "imagens/neve.png"},
+    {"codigo": 73, "descricao": "Neve moderada", "img": "imagens/neve.png"},
+    {"codigo": 75, "descricao": "Neve forte", "img": "imagens/neve.png"},
+    {"codigo": 77, "descricao": "Grãos de neve", "img": "imagens/neve.png"},
+    {"codigo": 80, "descricao": "Chuva fraca com pancadas", "img": "imagens/chuvoso.png"},
+    {"codigo": 81, "descricao": "Chuva moderada com pancadas", "img": "imagens/chuvoso.png"},
+    {"codigo": 82, "descricao": "Chuva forte com pancadas", "img": "imagens/chuvoso.png"},
+    {"codigo": 85, "descricao": "Neve fraca com pancadas", "img": "imagens/neve.png"},
+    {"codigo": 86, "descricao": "Neve forte com pancadas", "img": "imagens/neve.png"},
+    {"codigo": 95, "descricao": "Tempestade fraca ou moderada", "img": "imagens/chuvoso.png"},
+    {"codigo": 96, "descricao": "Tempestade com chuva de granizo fraco", "img": "imagens/chuvoso.png"},
+    {"codigo": 99, "descricao": "Tempestade com chuva de granizo forte", "img": "imagens/chuvoso.png"}
+  ],
+  
+  "diaSemana" : ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
+
+}
