@@ -412,10 +412,7 @@ function scrollCentro(){
 }
 
 function scrollToInput(){
-  var windowHeight = document.body.offsetHeight;
-  var contentHeight = container.offsetHeight;
-  var scrollPosition = windowHeight - contentHeight;
-  window.scrollTo(0, scrollPosition);
+  campoBuscaInput.scrollIntoView({ behavior: 'smooth' });
 }
 
 navigator.geolocation.watchPosition(function() {
