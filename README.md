@@ -16,4 +16,4 @@ GitHub Pages -> https://kpkpixels.github.io/app_clima/
 Open-Meteo -> https://open-meteo.com/en/docs
 
 ## Contato
-Se você tiver alguma dúvida, sugestão ou feedback, entre em contato através do email pablobentz@gmail.com.
+Se você tiver alguma dúvida, sugestão ou feedback, entre em contato através do email <a href="mailto:pablobentz@gmail.com">pablobentz@gmail.com</a>.
